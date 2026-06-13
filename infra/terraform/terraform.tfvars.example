@@ -1,0 +1,6 @@
+project           = "agentic-bank"
+region            = "us-east-1"
+db_instance_class = "db.t4g.small"
+db_password       = "CHANGE-ME-strong-password"
+single_nat        = true
+public_subnets_only = false

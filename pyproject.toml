@@ -1,0 +1,104 @@
+[project]
+name = "agentic-bank"
+version = "0.1.0"
+description = "Hybrid multi-agent banking system with NIST-aligned security"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Munawar Ali" }]
+
+dependencies = [
+  # Web + API
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "pydantic[email]>=2.9",
+  "pydantic-settings>=2.6",
+  "python-multipart>=0.0.12",
+  "httpx>=0.28",
+
+  # Agents
+  "langgraph>=1.1",
+  "langchain>=1.0",
+  "langchain-core>=1.0",
+  "langchain-ollama>=0.2",
+  "langgraph-checkpoint-postgres>=2.0",
+
+  # Persistence
+  "sqlalchemy>=2.0",
+  "asyncpg>=0.30",
+  "psycopg[binary,pool]>=3.2",
+  "alembic>=1.14",
+
+  # Security
+  "argon2-cffi>=23.1",
+  "python-jose[cryptography]>=3.3",
+  "cryptography>=44.0",
+  "slowapi>=0.1.9",
+  "redis>=5.0",
+
+  # Observability
+  "opentelemetry-api>=1.30",
+  "opentelemetry-sdk>=1.30",
+  "opentelemetry-instrumentation-fastapi>=0.51b0",
+  "opentelemetry-instrumentation-sqlalchemy>=0.51b0",
+  "opentelemetry-instrumentation-httpx>=0.51b0",
+  "opentelemetry-exporter-otlp>=1.30",
+  "prometheus-fastapi-instrumentator>=7.0",
+  "structlog>=24.4",
+
+  # Misc
+  "tenacity>=9.0",
+  "typer>=0.13",
+  "rich>=13.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.24",
+  "pytest-cov>=6.0",
+  "pytest-httpx>=0.34",
+  "hypothesis>=6.115",
+  "ruff>=0.8",
+  "mypy>=1.13",
+  "bandit>=1.8",
+  "pip-audit>=2.7",
+  "types-python-jose",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "S", "C4", "SIM", "ASYNC"]
+# S101 (assert) is fine in tests; S104 binding to all interfaces is intentional in containers.
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106"]   # hard-coded test passwords
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-ra --strict-markers --cov=app --cov-report=term-missing"
+markers = [
+  "unit: unit tests",
+  "integration: integration tests requiring docker compose",
+  "security: security-focused tests",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
+skips = ["B101"]
