@@ -1,0 +1,12 @@
+AgentBank-Sec Testbed
+Copyright 2026 Munawar Ali
+
+This product is licensed under the Apache License, Version 2.0 (the "License");
+you may not use this software except in compliance with the License. You may
+obtain a copy of the License in the accompanying LICENSE file.
+
+This is simulated research software. It contains no real money, no real banks,
+PSPs, or payment networks, no real customer data, and no connectors to any
+production API (FedNow, RTP, RTR, FDX, or otherwise). Routing numbers, names,
+and e-mail domains are fictitious. See SAFETY.md for intended use and
+responsible-disclosure guidance.
