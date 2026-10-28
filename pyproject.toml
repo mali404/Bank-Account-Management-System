@@ -1,0 +1,87 @@
+[project]
+name = "agentbank-sec"
+version = "0.1.0"
+description = "A fully simulated US-style open-banking and instant-payments ecosystem for measuring prompt-injection and agent-security attacks and defenses."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [{ name = "Munawar Ali" }]
+dependencies = [
+    "agentbank-common",
+    "agentbank-iso",
+    "agentbank-fdx",
+    "agentbank-ledger",
+    "agentbank-gateway",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pyyaml>=6.0",
+    "types-PyYAML>=6.0",
+]
+
+[tool.uv.workspace]
+members = ["libs/*"]
+
+[tool.uv.sources]
+agentbank-common = { workspace = true }
+agentbank-iso = { workspace = true }
+agentbank-fdx = { workspace = true }
+agentbank-ledger = { workspace = true }
+agentbank-gateway = { workspace = true }
+
+# This is an aggregation/workspace root, not an installable distribution.
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["libs/*/src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = [
+    "agentbank_common",
+    "agentbank_iso",
+    "agentbank_fdx",
+    "agentbank_ledger",
+    "agentbank_gateway",
+    "tests",
+]
+mypy_path = [
+    "libs/agentbank_common/src",
+    "libs/agentbank_iso/src",
+    "libs/agentbank_fdx/src",
+    "libs/agentbank_ledger/src",
+    "libs/agentbank_gateway/src",
+    ".",
+]
+
+[[tool.mypy.overrides]]
+# Test modules may omit return-type annotations on test functions.
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests", "libs"]
+addopts = "--import-mode=importlib -m 'not compose and not integration and not e2e'"
+markers = [
+    "integration: tests that exercise multiple components together",
+    "e2e: full end-to-end scenario tests",
+    "compose: tests that require a running docker compose stack",
+]

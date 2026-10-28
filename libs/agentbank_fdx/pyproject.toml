@@ -1,0 +1,16 @@
+[project]
+name = "agentbank-fdx"
+version = "0.1.0"
+description = "FDX-inspired API models for the AgentBank-Sec testbed (not FDX-certified)."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [{ name = "Munawar Ali" }]
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentbank_fdx"]
