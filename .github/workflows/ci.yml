@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-type-test:
+    name: lint + typecheck + test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Sync workspace
+        run: uv sync --all-packages --frozen
+      - name: Ruff lint
+        run: uv run ruff check .
+      - name: Ruff format check
+        run: uv run ruff format --check .
+      - name: Mypy (strict)
+        run: uv run mypy
+      - name: Pytest (unit)
+        run: uv run pytest
+
+  compose:
+    name: compose stack healthy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Bootstrap and start the stack
+        run: make bootstrap up
+      - name: Live health checks
+        run: make test-compose
+      - name: Dump compose logs on failure
+        if: failure()
+        run: docker compose --project-name agentbank --env-file .env -f deploy/compose.yaml logs
+      - name: Tear down
+        if: always()
+        run: make down
