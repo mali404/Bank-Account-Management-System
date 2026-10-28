@@ -1,0 +1,8 @@
+# Audit event catalog (SPEC §12, AU-2 Event Logging). STUB — populated in M7.
+#
+# Enumerates the events the testbed logs so attack chains can be reconstructed:
+# prompt/response hashes, tool calls, consent changes, ISO 20022 messages, and
+# ops actions. M7 fills `events` and the AU-2 coverage test checks it.
+#
+# Each entry: {name, source, attributes, control}
+events: []

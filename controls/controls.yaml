@@ -1,0 +1,10 @@
+# NIST SP 800-53 Rev.5 control mapping (SPEC §12). STUB — populated in M7.
+#
+# Machine-readable map from control -> implementing component(s) and the
+# evidence test that demonstrates it. The authoritative control table (baseline
+# membership, implementation, agent-security relevance, evidence test) is in
+# SPEC §12; M7 transcribes it here and adds controls/check_baselines.py to
+# re-verify baseline membership from the NIST OSCAL content in CI.
+#
+# Each entry: {id, baseline, implementation, relevance, evidence_test}
+controls: []

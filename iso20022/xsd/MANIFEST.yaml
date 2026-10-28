@@ -1,0 +1,10 @@
+# ISO 20022 XSD manifest (SPEC §6.1). STUB — populated in M1.
+#
+# Records the exact XSD filename, version, and SHA-256 for every message in the
+# SPEC §6.1 message set, plus the source URL it was downloaded from. The XSDs
+# themselves are fetched by `make bootstrap` from the free iso20022.org
+# catalogue (member-gated FedNow/MyStandards usage guides are NOT redistributed;
+# SPEC §6.2, §17). M1 fills `messages` with one entry per message.
+#
+# Each entry: {message, version, file, sha256, source_url}
+messages: []
