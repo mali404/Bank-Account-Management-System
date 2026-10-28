@@ -1,0 +1,5 @@
+# Overlay: observability (OTel Collector, Jaeger, OpenSearch, Prometheus).
+# Populated in milestone M7 (SPEC §13, §15). Empty for now so
+# `docker compose config` validates.
+name: agentbank
+services: {}

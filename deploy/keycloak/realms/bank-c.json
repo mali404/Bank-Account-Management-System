@@ -1,0 +1,13 @@
+{
+  "realm": "bank-c",
+  "enabled": true,
+  "displayName": "Cascade Credit Union",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": []
+  },
+  "users": [],
+  "clients": []
+}

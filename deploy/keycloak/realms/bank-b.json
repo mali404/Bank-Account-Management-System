@@ -1,0 +1,13 @@
+{
+  "realm": "bank-b",
+  "enabled": true,
+  "displayName": "Birchwood Community Bank",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": []
+  },
+  "users": [],
+  "clients": []
+}

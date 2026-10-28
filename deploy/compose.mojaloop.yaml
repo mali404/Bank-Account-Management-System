@@ -1,0 +1,5 @@
+# Overlay: optional Mojaloop switch backend (ISO 20022 mode). Stretch goal,
+# milestone M8 (SPEC §1.2, §15). Empty for now so `docker compose config`
+# validates.
+name: agentbank
+services: {}

@@ -1,0 +1,18 @@
+# SimNow switch participant registry (SPEC §5.3). All data is fictitious.
+# participant_limit is in USD minor units; default $100,000, configurable up to
+# $10,000,000 (the FedNow-inspired network limit).
+defaults:
+  participant_limit_minor: 10000000     # $100,000.00 default per participant
+  network_limit_minor: 1000000000       # $10,000,000.00 ceiling
+  currency: USD
+
+participants:
+  - id: bank-a
+    routing: "999900011"   # USABA member id used for ClrSysMmbId routing
+    participant_limit_minor: 10000000
+  - id: bank-b
+    routing: "999900022"
+    participant_limit_minor: 10000000
+  - id: bank-c
+    routing: "999900033"
+    participant_limit_minor: 10000000

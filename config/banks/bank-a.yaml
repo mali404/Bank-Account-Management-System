@@ -1,0 +1,18 @@
+# Aurora National Bank (SPEC §3.1). All data is fictitious.
+id: bank-a
+name: Aurora National Bank
+routing: "999900011"  # fictitious reserved range 9999000xx, not a real ABA number
+schema: bank_a
+realm: bank-a
+contact_email: ops@bank-a.test
+profile:
+  size: large
+  posture: strict
+  fapi_variant: mtls          # bank-a uses the FAPI 2.0 mTLS variant (SPEC §5.2)
+  new_payee_cooling_hours: 24
+  name_check: true
+  step_up_threshold_minor: 100000      # $1,000.00
+  per_payment_limit_minor: 2500000     # $25,000.00
+  daily_limit_minor: 5000000           # $50,000.00
+  stricter_when_agent_initiated: true
+  notes: "Ops/fraud agent with HITL (SPEC §3.1)."

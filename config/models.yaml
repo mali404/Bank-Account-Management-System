@@ -1,0 +1,15 @@
+# LLM model registry (SPEC §13, §15). STUB — populated in M4/M7.
+#
+# No vendor-specific defaults. The only model defined for M0 is a local mock
+# used by deterministic tests (no network, no egress). Hosted models are added
+# in later milestones and only run when ALLOW_LLM_EGRESS=1 (SPEC §15, §17).
+version: 0
+default: mock-local
+
+models:
+  mock-local:
+    provider: mock
+    version: "0"
+    endpoint: null          # in-process stub; deterministic given a seed
+    egress_required: false
+    notes: "Deterministic mock used by tests; no network access."

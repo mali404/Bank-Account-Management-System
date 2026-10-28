@@ -1,0 +1,25 @@
+# SimNow ISO 20022 usage rules (SPEC §5.3). STUB — populated in M1/M2.
+#
+# The switch validates inbound messages against the base ISO 20022 XSDs (M1)
+# plus the documented usage rules below. FedNow's own usage guidelines are
+# login-gated and are NOT redistributed here (SPEC §1.2, §17); these rules are
+# authored from public descriptions.
+#
+# M1 adds the XSD-level validation; M2 enforces these rules in the pipeline.
+version: 0
+status: stub
+pacs.008.001.08:
+  max_tx_per_message: 1            # one tx per pacs.008
+  charge_bearer: SLEV             # ChrgBr=SLEV
+  settlement_date: today          # IntrBkSttlmDt = today
+  charset_profile: latin          # latin (strict) | extended (defense knob)
+  mandatory_fields:               # placeholder; full list in M2
+    - MsgId
+    - CreDtTm
+    - EndToEndId
+    - IntrBkSttlmAmt
+duplicate_keys:                   # duplicate detection (SPEC §5.3)
+  - MsgId
+  - EndToEndId
+  - UETR
+receiver_timeout_s: 20            # RECEIVER_TIMEOUT_S default (SPEC §5.3)

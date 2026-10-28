@@ -1,0 +1,13 @@
+{
+  "realm": "bank-a",
+  "enabled": true,
+  "displayName": "Aurora National Bank",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": []
+  },
+  "users": [],
+  "clients": []
+}
