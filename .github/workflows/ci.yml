@@ -21,14 +21,20 @@ jobs:
           python-version: "3.12"
       - name: Sync workspace
         run: uv sync --all-packages --frozen
+      - name: ISO 20022 XSDs (download + SHA-256 verify) and bindings
+        run: make iso-setup
+      - name: Verify XSD hashes
+        run: make xsd-verify
       - name: Ruff lint
         run: uv run ruff check .
       - name: Ruff format check
         run: uv run ruff format --check .
       - name: Mypy (strict)
         run: uv run mypy
-      - name: Pytest (unit)
+      - name: Pytest (unit + ISO acceptance, ci Hypothesis profile)
         run: uv run pytest
+        env:
+          HYPOTHESIS_PROFILE: ci
 
   compose:
     name: compose stack healthy
