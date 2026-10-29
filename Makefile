@@ -97,6 +97,8 @@ clean: ## Remove caches and generated artifacts
 # --- Targets for later milestones (fail loudly so nobody mistakes them for working) ---
 
 SEED ?= 42
+MODEL ?= mock-local
+DEFENSE ?= D0
 
 seed: ## (M2) Seed synthetic customers, history and the reset snapshot
 	@uv run python data/generator/generate.py --seed $(SEED)
@@ -104,11 +106,11 @@ seed: ## (M2) Seed synthetic customers, history and the reset snapshot
 reset: ## (M2) Restore the seeded snapshot (budget 30s)
 	@uv run python scripts/reset_state.py
 
-bench: ## (M5) Run bankbench evaluation — not implemented yet
-	@echo "bench: not implemented yet (milestone M5)"; exit 1
+bench: ## (M5) Run bankbench and write results/<run>/report.md
+	uv run python -m bankbench --model $(MODEL) --defense $(DEFENSE) --seed $(SEED)
 
-report: ## (M5) Render a run report — not implemented yet
-	@echo "report: not implemented yet (milestone M5)"; exit 1
+report: ## (M5) Render the bankbench report for MODEL and DEFENSE
+	uv run python -m bankbench --model $(MODEL) --defense $(DEFENSE) --seed $(SEED)
 
 controls-check: ## (M7) Verify NIST controls against OSCAL — not implemented yet
 	@echo "controls-check: not implemented yet (milestone M7)"; exit 1
