@@ -6,7 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = "Apache-2.0"
 authors = [{ name = "Munawar Ali" }]
-dependencies = []
+dependencies = [
+    "agentbank-ledger",
+    "fastapi>=0.115",
+    "pyjwt[crypto]>=2.10",
+    "python-multipart>=0.0.18",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -14,3 +19,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/agentbank_fdx"]
+
+[tool.uv.sources]
+agentbank-ledger = { workspace = true }

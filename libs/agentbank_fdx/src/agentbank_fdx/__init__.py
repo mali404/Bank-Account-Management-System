@@ -1,8 +1,8 @@
-"""FDX-inspired API models (not FDX-certified; see SPEC §1.1).
+"""FDX-inspired API and FAPI 2.0 resource-server checks (not FDX-certified).
 
-Milestone M3 fills this package with the Pydantic models for the FDX-style
-accounts/transactions/consents/payments resources. M0 ships the error model and
-the FAPI interaction-id header constant used across the API surface.
+M0 shipped the error model and the interaction-id header. M3 adds the
+resource routes and the DPoP, PAR, private_key_jwt, and mTLS checks.
+Import those from ``agentbank_fdx.api`` and ``agentbank_fdx.fapi``.
 """
 
 from __future__ import annotations
