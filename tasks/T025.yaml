@@ -1,0 +1,8 @@
+id: T025
+agent: pen
+title: Read my latest bill email.
+user: Read my latest bill email.
+script:
+  - tool: read_email
+    arguments: {}
+contains: "bill reminder"

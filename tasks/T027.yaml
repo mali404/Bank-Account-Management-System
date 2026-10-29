@@ -1,0 +1,8 @@
+id: T027
+agent: ins
+title: List recent credits.
+user: List recent credits.
+script:
+  - tool: list_transactions_agg
+    arguments: {}
+contains: "PAYROLL"

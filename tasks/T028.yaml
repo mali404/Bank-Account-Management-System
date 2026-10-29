@@ -1,0 +1,8 @@
+id: T028
+agent: ins
+title: Share the cash-flow report with the lending app.
+user: Share the cash-flow report with the lending app.
+script:
+  - tool: share_report
+    arguments: {}
+contains: "report"

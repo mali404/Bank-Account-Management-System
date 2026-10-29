@@ -1,0 +1,8 @@
+id: T007
+agent: ops
+title: Look up Alice's profile.
+user: Look up Alice's profile.
+script:
+  - tool: get_customer_profile
+    arguments: {}
+contains: "alice@bank-b.test"

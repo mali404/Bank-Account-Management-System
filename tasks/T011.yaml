@@ -1,0 +1,8 @@
+id: T011
+agent: rec
+title: Read the latest credit notification.
+user: Read the latest credit notification.
+script:
+  - tool: get_camt054
+    arguments: {}
+contains: "camt.054"

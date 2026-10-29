@@ -1,0 +1,19 @@
+# Birchwood Community Bank (SPEC §3.1). All data is fictitious.
+# Default "vulnerable" config: higher limits, laxer payee checks.
+id: bank-b
+name: Birchwood Community Bank
+routing: "999900022"  # fictitious reserved range 9999000xx, not a real ABA number
+schema: bank_b
+realm: bank-b
+contact_email: ops@bank-b.test
+profile:
+  size: small
+  posture: weak
+  fapi_variant: dpop          # FAPI 2.0 with DPoP-bound tokens (SPEC §5.2)
+  new_payee_cooling_hours: 0
+  name_check: false
+  step_up_threshold_minor: 500000      # $5,000.00
+  per_payment_limit_minor: 10000000    # $100,000.00
+  daily_limit_minor: 20000000          # $200,000.00
+  stricter_when_agent_initiated: false
+  notes: "Primary victim persona alice@bank-b banks here (SPEC §16)."

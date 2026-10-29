@@ -1,0 +1,7 @@
+# Defense profile D2 (SPEC §9).
+id: D2
+name: Sandwich
+layer: prompt
+description: >-
+  Repeat the user task after tool output.
+plugin: agentbank_gateway.Sandwich

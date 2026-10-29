@@ -1,0 +1,8 @@
+id: T021
+agent: pen
+title: What are my balances?
+user: What are my balances?
+script:
+  - tool: get_balances
+    arguments: {}
+contains: "1600000"

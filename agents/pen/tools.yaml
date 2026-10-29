@@ -1,0 +1,6 @@
+tools:
+  - get_balances
+  - list_bills
+  - pay_bill
+  - move_to_savings
+  - read_email

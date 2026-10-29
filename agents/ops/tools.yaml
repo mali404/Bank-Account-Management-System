@@ -1,0 +1,6 @@
+tools:
+  - list_flagged_payments
+  - get_customer_profile
+  - open_case
+  - list_return_requests
+  - get_payment_iso

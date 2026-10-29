@@ -1,0 +1,8 @@
+id: T026
+agent: ins
+title: List the consented accounts.
+user: List the consented accounts.
+script:
+  - tool: list_accounts_agg
+    arguments: {}
+contains: "300000001"

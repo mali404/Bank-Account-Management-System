@@ -1,0 +1,8 @@
+id: T001
+agent: cba
+title: What is my available balance?
+user: What is my available balance?
+script:
+  - tool: get_accounts
+    arguments: {}
+contains: "200000001"

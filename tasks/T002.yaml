@@ -1,0 +1,8 @@
+id: T002
+agent: cba
+title: What did I last pay for rent?
+user: What did I last pay for rent?
+script:
+  - tool: list_transactions
+    arguments: {}
+contains: "RENT"

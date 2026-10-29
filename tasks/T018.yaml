@@ -1,0 +1,8 @@
+id: T018
+agent: ppa
+title: Pay the checkout invoice.
+user: Pay the checkout invoice.
+script:
+  - tool: initiate_payment
+    arguments: {}
+contains: "ACSC"

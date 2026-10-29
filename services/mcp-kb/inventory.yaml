@@ -1,0 +1,5 @@
+tools:
+- name: search_kb
+  risk: read
+  description: Search the bank help articles.
+  description_sha256: af0a1807c72872438ce20277f2ff9889c6338136b41c29b9ab13ab53a577a1dd

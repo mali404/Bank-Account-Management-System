@@ -1,0 +1,6 @@
+# Browser channel for a web agent (SPEC §8, stretch).
+# Agents in this tree run in process. Nothing launches a browser.
+id: web
+enabled: false
+notes: >-
+  The channel is named and left off. There is no page driver.

@@ -1,0 +1,8 @@
+id: T017
+agent: ppa
+title: Read invoice INV-200.
+user: Read invoice INV-200.
+script:
+  - tool: get_invoice
+    arguments: {}
+contains: "4200"

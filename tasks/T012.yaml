@@ -1,0 +1,8 @@
+id: T012
+agent: rec
+title: Which invoices are still open?
+user: Which invoices are still open?
+script:
+  - tool: list_open_invoices
+    arguments: {}
+contains: "INV-100"

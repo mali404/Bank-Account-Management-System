@@ -1,0 +1,13 @@
+tools:
+- name: read_inbox
+  risk: read
+  description: Read the latest inbox message.
+  description_sha256: 958abc3399a5236b76ecbb75418b90f0da0f5e39f1daca9b12eafe398498d324
+- name: email_customer
+  risk: external-send
+  description: Queue a notice to the customer.
+  description_sha256: b3fadfd6c85985eb3b578dca86c9af21ce21216ce026a3a4e1b4266dbc85882b
+- name: read_email
+  risk: read
+  description: Read the customer's mail.
+  description_sha256: 034cfd407b08dbcf50e20f91e4c55a74ec40b5b2c02f6a8470179831a99c2daf

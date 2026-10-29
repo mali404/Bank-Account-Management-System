@@ -1,0 +1,150 @@
+# SimNow ISO 20022 usage rules (SPEC §5.3).
+#
+# The switch validates inbound messages against the base ISO 20022 XSDs (M1)
+# plus the documented usage rules below. FedNow's own usage guidelines are
+# login-gated and are NOT redistributed here (SPEC §1.2, §17); these rules are
+# authored from public descriptions. M1 ships the validator
+# (agentbank_iso.usage_rules); M2 wires it into the switch inbound pipeline.
+#
+# Charset profiles (see agentbank_iso.charset for the exact definitions):
+#   latin    — strict SWIFT/ISO restricted Latin "x" set; rejects all non-ASCII,
+#              control, homoglyph, Unicode tag and bidi characters.
+#   extended — weak knob: allows arbitrary Unicode (incl. tag chars and bidi
+#              controls), rejecting only traditional control characters.
+version: 1
+
+defaults:
+  currency: USD
+  charset_profile: latin
+
+# Duplicate detection keys (SPEC §5.3 step 4).
+duplicate_keys:
+  - MsgId
+  - EndToEndId
+  - UETR
+
+# Receiver timeout before the switch issues an RJCT (SPEC §5.3).
+receiver_timeout_s: 20
+
+# Routing numbers (ClrSysMmbId/MmbId) must be nine digits and belong to a
+# configured participant (see config/switch/participants.yaml).
+routing:
+  digits: 9
+  must_be_participant: true
+
+messages:
+  head.001.001.02:
+    charset_profile: latin
+    mandatory_fields: [Fr, To, BizMsgIdr, MsgDefIdr, CreDt]
+
+  pacs.008.001.08:
+    charset_profile: latin
+    max_tx_per_message: 1          # one tx per pacs.008
+    charge_bearer: SLEV            # ChrgBr = SLEV
+    settlement_date: today         # IntrBkSttlmDt = today (clock injectable)
+    mandatory_fields:
+      - MsgId
+      - CreDtTm
+      - NbOfTxs
+      - IntrBkSttlmDt
+      - EndToEndId
+      - IntrBkSttlmAmt
+      - ChrgBr
+      - Dbtr
+      - Cdtr
+      - DbtrAgt
+      - CdtrAgt
+    free_text:
+      - {label: "Dbtr/Nm", max_length: 140}
+      - {label: "Cdtr/Nm", max_length: 140}
+      - {label: "UltmtDbtr/Nm", max_length: 140}
+      - {label: "RmtInf/Ustrd", max_length: 140}
+      - {label: "RmtInf/Strd/AddtlRmtInf", max_length: 140}
+      - {label: "InstrForCdtrAgt/InstrInf", max_length: 140}
+
+  pacs.002.001.10:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, TxSts]
+    free_text:
+      - {label: "StsRsnInf/AddtlInf", max_length: 105}
+
+  pacs.004.001.10:
+    charset_profile: latin
+    max_tx_per_message: 1
+    settlement_date: today
+    mandatory_fields: [MsgId, CreDtTm, NbOfTxs, RtrdIntrBkSttlmAmt]
+    free_text:
+      - {label: "RtrRsnInf/AddtlInf", max_length: 105}
+
+  camt.056.001.08:
+    charset_profile: latin
+    mandatory_fields: [Id, CreDtTm, OrgnlEndToEndId]
+    free_text:
+      - {label: "CxlRsnInf/AddtlInf", max_length: 105}
+
+  camt.029.001.09:
+    charset_profile: latin
+    mandatory_fields: [Id, CreDtTm, Conf]
+    free_text:
+      - {label: "CxlStsRsnInf/AddtlInf", max_length: 105}
+
+  pacs.028.001.03:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, OrgnlEndToEndId]
+
+  pain.013.001.07:
+    charset_profile: latin
+    max_tx_per_message: 1
+    charge_bearer: SLEV
+    mandatory_fields: [MsgId, CreDtTm, NbOfTxs, PmtInfId, EndToEndId, Cdtr]
+    free_text:
+      - {label: "Cdtr/Nm", max_length: 140}
+      - {label: "RmtInf/Ustrd", max_length: 140}
+      - {label: "InstrForCdtrAgt/InstrInf", max_length: 140}
+
+  pain.014.001.07:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, OrgnlPmtInfId]
+    free_text:
+      - {label: "StsRsnInf/AddtlInf", max_length: 105}
+
+  pain.001.001.09:
+    charset_profile: latin
+    max_tx_per_message: 1
+    charge_bearer: SLEV
+    mandatory_fields: [MsgId, CreDtTm, NbOfTxs, PmtInfId, EndToEndId, Dbtr, Cdtr]
+    free_text:
+      - {label: "Cdtr/Nm", max_length: 140}
+      - {label: "RmtInf/Ustrd", max_length: 140}
+
+  pain.002.001.10:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, OrgnlPmtInfId, TxSts]
+    free_text:
+      - {label: "StsRsnInf/AddtlInf", max_length: 105}
+
+  camt.053.001.08:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, Id]
+    free_text:
+      - {label: "Ntry/AddtlNtryInf", max_length: 500}
+      - {label: "NtryDtls/TxDtls/RmtInf/Ustrd", max_length: 140}
+
+  camt.054.001.08:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, Id]
+    free_text:
+      - {label: "Ntry/AddtlNtryInf", max_length: 500}
+      - {label: "NtryDtls/TxDtls/RmtInf/Ustrd", max_length: 140}
+
+  camt.052.001.08:
+    charset_profile: latin
+    mandatory_fields: [MsgId, CreDtTm, Id]
+    free_text:
+      - {label: "Ntry/AddtlNtryInf", max_length: 500}
+
+  admi.002.001.01:
+    charset_profile: latin
+    mandatory_fields: [RltdRef, RjctgPtyRsn]
+    free_text:
+      - {label: "Rsn/RsnDesc", max_length: 350}

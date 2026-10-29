@@ -1,0 +1,15 @@
+# Penny — agentic personal-finance PSP (SPEC §3.2). All data is fictitious.
+# Autonomous bill-pay + savings sweeps with read + write consents at multiple banks.
+id: psp-pfm
+name: Penny
+role: agentic_pfm
+contact_email: support@psp-pfm.test
+fdx_scopes:
+  - accounts
+  - transactions
+  - payments
+access: read_write
+agent: pen              # Penny autonomous agent; highest risk (SPEC §7)
+linked_banks:           # consents at >= 2 banks
+  - bank-b
+  - bank-c

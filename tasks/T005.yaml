@@ -1,0 +1,8 @@
+id: T005
+agent: cba
+title: What routing number does the help article give?
+user: What routing number does the help article give?
+script:
+  - tool: search_kb
+    arguments: {}
+contains: "999900022"

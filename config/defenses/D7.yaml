@@ -1,0 +1,7 @@
+# Defense profile D7 (SPEC §9).
+id: D7
+name: Human-in-the-loop
+layer: process
+description: >-
+  Ask the user-sim before a write-high call or a call built from untrusted data.
+plugin: agentbank_gateway.Hitl

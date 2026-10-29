@@ -1,0 +1,8 @@
+id: T015
+agent: rec
+title: Email the customer that the invoice matched.
+user: Email the customer that the invoice matched.
+script:
+  - tool: email_customer
+    arguments: {}
+contains: "queued"

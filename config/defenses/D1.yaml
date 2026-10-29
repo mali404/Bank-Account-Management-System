@@ -1,0 +1,7 @@
+# Defense profile D1 (SPEC §9).
+id: D1
+name: Spotlighting
+layer: prompt
+description: >-
+  Delimit untrusted tool text and tell the model it is data.
+plugin: agentbank_gateway.Spotlighting

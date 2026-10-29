@@ -1,0 +1,411 @@
+# NIST SP 800-53 Rev.5 control mapping (SPEC §12).
+# Baseline letters were checked against the vendored OSCAL 5.2.0 profiles.
+# An empty baseline means the control is tailored in and is in no NIST baseline.
+controls:
+- id: AC-2
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Keycloak realms; distinct service account per agent
+  relevance: Agents are first-class identities
+  evidence_test: tests/controls/test_ac_2.py
+- id: AC-2(4)
+  baseline:
+  - moderate
+  - high
+  implementation: Keycloak admin events exported as audit events
+  relevance: Detect identity changes
+  evidence_test: tests/controls/test_ac_2_4.py
+- id: AC-3
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Bank resource server enforces scope and consent; D4 tool policy
+  relevance: Blocks injected actions
+  evidence_test: tests/controls/test_ac_3.py
+- id: AC-4
+  baseline:
+  - moderate
+  - high
+  implementation: Provenance flow policy (D6) and egress checks
+  relevance: Untrusted data must not reach a high-risk argument
+  evidence_test: tests/controls/test_ac_4.py
+- id: AC-6
+  baseline:
+  - moderate
+  - high
+  implementation: Per-task tool allowlists (D5)
+  relevance: Limits blast radius
+  evidence_test: tests/controls/test_ac_6.py
+- id: AC-6(9)
+  baseline:
+  - moderate
+  - high
+  implementation: Audit every tool call with run_id
+  relevance: Forensics
+  evidence_test: tests/controls/test_ac_6_9.py
+- id: AC-6(10)
+  baseline:
+  - moderate
+  - high
+  implementation: CBA tool list does not include ops tools
+  relevance: Confused deputy
+  evidence_test: tests/controls/test_ac_6_10.py
+- id: AC-16
+  baseline: []
+  implementation: Provenance and trust labels on tool outputs
+  relevance: Basis for D1 and D6
+  evidence_test: tests/controls/test_ac_16.py
+- id: AC-17
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Services on internal compose networks
+  relevance: Remote access stays on the simulated networks
+  evidence_test: tests/controls/test_ac_17.py
+- id: AC-21
+  baseline:
+  - moderate
+  - high
+  implementation: FDX consent scopes for PSP clients
+  relevance: Aggregator access is scoped
+  evidence_test: tests/controls/test_ac_21.py
+- id: AC-24
+  baseline: []
+  implementation: Tool-call policy outside the model (D4)
+  relevance: The model does not make the access decision
+  evidence_test: tests/controls/test_ac_24.py
+- id: AU-2
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: controls/audit_events.yaml catalogs prompts, tools, consents, ISO
+    messages, and ops actions
+  relevance: Reconstruct an attack chain
+  evidence_test: tests/controls/test_au_2.py
+- id: AU-3
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: 'OTel span attributes: run_id, task_id, defense_profile, prompt_hash'
+  relevance: Attribution
+  evidence_test: tests/controls/test_au_3.py
+- id: AU-3(1)
+  baseline:
+  - moderate
+  - high
+  implementation: Same span attributes as AU-3, plus the prompt hash
+  relevance: Attribution of content
+  evidence_test: tests/controls/test_au_3_1.py
+- id: AU-6
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: bankbench report with ASR and BU
+  relevance: Detection review
+  evidence_test: tests/controls/test_au_6.py
+- id: AU-8
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: UTC anchor timestamps
+  relevance: Ordering
+  evidence_test: tests/controls/test_au_8.py
+- id: AU-9
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Switch archive hash chain
+  relevance: Audit evasion
+  evidence_test: tests/controls/test_au_9.py
+- id: AU-9(4)
+  baseline:
+  - moderate
+  - high
+  implementation: Tampering with an archived blob fails the hash chain
+  relevance: Audit evasion
+  evidence_test: tests/controls/test_au_9_4.py
+- id: AU-10
+  baseline:
+  - high
+  implementation: JWS compact serialization in agentbank_fdx.instructions; the switch still accepts unsigned pacs.008
+  relevance: Who initiated a payment
+  evidence_test: tests/controls/test_au_10.py
+- id: AU-11
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Results directory is retained with each run
+  relevance: Reproducibility
+  evidence_test: tests/controls/test_au_11.py
+- id: AU-12
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: In-memory OTel span per agent run
+  relevance: Spans for a flow
+  evidence_test: tests/controls/test_au_12.py
+- id: CA-7
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: bankbench catalog can be re-run
+  relevance: ASR drift
+  evidence_test: tests/controls/test_ca_7.py
+- id: CA-8
+  baseline:
+  - high
+  implementation: Attack catalog S01-S24
+  relevance: Red-team scenarios
+  evidence_test: tests/controls/test_ca_8.py
+- id: CM-2
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Versioned defense profiles and pinned image tags
+  relevance: Reproducibility
+  evidence_test: tests/controls/test_cm_2.py
+- id: CM-3
+  baseline:
+  - moderate
+  - high
+  implementation: Tool description hashes in inventory.yaml
+  relevance: Descriptor change is visible
+  evidence_test: tests/controls/test_cm_3.py
+- id: CM-6
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Minimal tool set per agent; postgres is not on the egress network
+  relevance: Smaller attack surface
+  evidence_test: tests/controls/test_cm_6.py
+- id: CM-7
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Same least-functionality check as CM-6
+  relevance: No extra egress
+  evidence_test: tests/controls/test_cm_7.py
+- id: CM-8
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: MCP inventories and the model registry
+  relevance: Component inventory
+  evidence_test: tests/controls/test_cm_8.py
+- id: IA-2
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Bank profile step-up threshold
+  relevance: Step-up for a high-value agent payment
+  evidence_test: tests/controls/test_ia_2.py
+- id: IA-2(1)
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Step-up threshold is configured for the bank profile
+  relevance: Second factor for staff and step-up
+  evidence_test: tests/controls/test_ia_2_1.py
+- id: IA-3
+  baseline:
+  - moderate
+  - high
+  implementation: Bank-a FAPI variant is mtls
+  relevance: Message-origin binding
+  evidence_test: tests/controls/test_ia_3.py
+- id: IA-4
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: PSP clients use private_key_jwt and have no client secret
+  relevance: Authenticator management
+  evidence_test: tests/controls/test_ia_4.py
+- id: IA-5
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Same private_key_jwt clients as IA-4
+  relevance: No secret in the realm export
+  evidence_test: tests/controls/test_ia_5.py
+- id: IA-8
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: PSP clients are registered in each bank realm
+  relevance: Third-party identity
+  evidence_test: tests/controls/test_ia_8.py
+- id: IA-9
+  baseline: []
+  implementation: MCP inventories pin a description hash
+  relevance: Spoofed tool text is detectable
+  evidence_test: tests/controls/test_ia_9.py
+- id: IA-11
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Consent revocation is implemented on the FDX routes
+  relevance: Consent changes can be cut off
+  evidence_test: tests/controls/test_ia_11.py
+- id: IR-4
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: 'controls/playbook.md: freeze, recall, revoke'
+  relevance: Containment
+  evidence_test: tests/controls/test_ir_4.py
+- id: RA-5
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: CI runs the test suite
+  relevance: Regression on each change
+  evidence_test: tests/controls/test_ra_5.py
+- id: SA-11
+  baseline:
+  - moderate
+  - high
+  implementation: Milestone acceptance tests
+  relevance: Developer testing
+  evidence_test: tests/controls/test_sa_11.py
+- id: SC-5
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Per-run tool-call budget
+  relevance: Agent loops stop
+  evidence_test: tests/controls/test_sc_5.py
+- id: SC-7
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Internal compose networks; Jaeger UI binds to 127.0.0.1
+  relevance: Boundary protection
+  evidence_test: tests/controls/test_sc_7.py
+- id: SC-8
+  baseline:
+  - moderate
+  - high
+  implementation: Published ports bind to 127.0.0.1; images are not :latest
+  relevance: Transmission stays on the host
+  evidence_test: tests/controls/test_sc_8.py
+- id: SC-8(1)
+  baseline:
+  - moderate
+  - high
+  implementation: Same localhost binding as SC-8
+  relevance: Integrity of the published edge
+  evidence_test: tests/controls/test_sc_8_1.py
+- id: SC-12
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: step-ca is in the core compose file
+  relevance: Key management for the simulation
+  evidence_test: tests/controls/test_sc_12.py
+- id: SC-13
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: step-ca is the internal PKI
+  relevance: Cryptographic protection for the simulation
+  evidence_test: tests/controls/test_sc_13.py
+- id: SC-23
+  baseline:
+  - moderate
+  - high
+  implementation: DPoP proof replay is rejected
+  relevance: Stolen-token replay
+  evidence_test: tests/controls/test_sc_23.py
+- id: SC-28
+  baseline:
+  - moderate
+  - high
+  implementation: Fernet seal for a PSP access token
+  relevance: Token is not stored in the clear
+  evidence_test: tests/controls/test_sc_28.py
+- id: SI-3
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: D3 pattern detector drops an injection marker
+  relevance: Malicious tool text
+  evidence_test: tests/controls/test_si_3.py
+- id: SI-4
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: D3 sets detected on S01 and the attack oracle stays false
+  relevance: Monitoring an injected run
+  evidence_test: tests/controls/test_si_4.py
+- id: SI-4(4)
+  baseline:
+  - moderate
+  - high
+  implementation: Same D3 detection check as SI-4
+  relevance: Inbound and outbound content
+  evidence_test: tests/controls/test_si_4_4.py
+- id: SI-7
+  baseline:
+  - moderate
+  - high
+  implementation: Inventory hashes and the switch hash chain
+  relevance: Descriptor and archive integrity
+  evidence_test: tests/controls/test_si_7.py
+- id: SI-10
+  baseline:
+  - moderate
+  - high
+  implementation: XSD validator rejects malformed XML
+  relevance: Smuggled payloads
+  evidence_test: tests/controls/test_si_10.py
+- id: SI-15
+  baseline: []
+  implementation: D9 blocks a canary on an egress tool
+  relevance: Exfiltration filter
+  evidence_test: tests/controls/test_si_15.py
+- id: SR-3
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: uv.lock pins dependencies; the default model is mock-local
+  relevance: Supply chain pin
+  evidence_test: tests/controls/test_sr_3.py
+- id: SR-11
+  baseline:
+  - low
+  - moderate
+  - high
+  implementation: Same lockfile and model registry as SR-3
+  relevance: Component authenticity
+  evidence_test: tests/controls/test_sr_11.py

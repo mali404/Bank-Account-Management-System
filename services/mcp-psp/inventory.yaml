@@ -1,0 +1,57 @@
+tools:
+- name: list_invoices
+  risk: read
+  description: List merchant invoices.
+  description_sha256: e501101e3918beabf4b55bd2382a9d154f4e520d29ae503b5837c7acfe307cb8
+- name: get_invoice
+  risk: read
+  description: Read one merchant invoice.
+  description_sha256: 0d63269cc16bde31d7f02a60ecb6add3927c60020473919c6c7e234d60f84da4
+- name: initiate_payment
+  risk: write-high
+  description: Initiate a consented payment.
+  description_sha256: 35ac02a9d8ade6eae856d13983c1c2564b9b258494efedac92e5b7909e7bffe1
+- name: get_payment_status
+  risk: read
+  description: Read a payment status.
+  description_sha256: 2dbd9c4e522bdef3c50af5c68ff3df207f8eb42349f2a5f273be6d669bf8e479
+- name: notify_merchant
+  risk: external-send
+  description: Tell the merchant a payment settled.
+  description_sha256: f497b61721d21bede37d81d7ec5e67af9719889e052281fe796092997cb88658
+- name: get_balances
+  risk: read
+  description: Read balances at linked banks.
+  description_sha256: 5c721e4f52489ec10b5f32f3e6f069a7153d9e52c5da6c080c380b73578199c8
+- name: list_bills
+  risk: read
+  description: List upcoming bills.
+  description_sha256: 276e3460edcf2d762fc23dee51a5bbc9884c31e4f6db55d1903aa39e309f5299
+- name: pay_bill
+  risk: write-high
+  description: Pay a bill under an existing consent.
+  description_sha256: 71c80c01a1dd9b7befff7feee7ae524d7ac01de61525b8ee99fb6e4973b4766f
+- name: move_to_savings
+  risk: write-low
+  description: Sweep surplus into savings.
+  description_sha256: 887237e742393250564221358180ee98091bae218a9429ff346bbf089e933aad
+- name: list_accounts_agg
+  risk: read
+  description: List accounts under a read consent.
+  description_sha256: a77c70dd6ea554361d77a7ad00bff6dcfe9a0b7f0108df81fb34f6dcb41b728f
+- name: list_transactions_agg
+  risk: read
+  description: List transactions under a read consent.
+  description_sha256: 8f3b52eb56e5b4026596814f38c73f9a96aae136c6b2148e458474bfbf55a998
+- name: share_report
+  risk: external-send
+  description: Share a cash-flow report downstream.
+  description_sha256: 509c37890f49e43ecd4dd34dac538658ecf24123613a833a6a398843d356dbe8
+- name: list_statements
+  risk: read
+  description: List statements under a read consent.
+  description_sha256: 7f30556671b31b382d5e55a4d979ba8c7e0ebb7cdf3312bbd23e5667249aca15
+- name: export_summary
+  risk: read
+  description: Build a minimized cash-flow summary.
+  description_sha256: b155c1c7278d62f6cc1d9cc2e278d84490305f6c99c96137dba3a5fad9ee768f

@@ -1,0 +1,7 @@
+# Defense profile D5 (SPEC §9).
+id: D5
+name: Tool pruning
+layer: action
+description: >-
+  Allow only the tools selected for the user task before untrusted data is read.
+plugin: agentbank_gateway.ToolPruning

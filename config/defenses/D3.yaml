@@ -1,0 +1,7 @@
+# Defense profile D3 (SPEC §9).
+id: D3
+name: PI detector
+layer: input filter
+description: >-
+  Pattern detector on untrusted tool output. Hugging Face classifiers are not loaded: ProtectAI weights need a license check, and Meta Prompt Guard 2 uses the Llama license, which is not an OSI license.
+plugin: agentbank_gateway.Detector

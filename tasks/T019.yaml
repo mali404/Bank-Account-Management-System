@@ -1,0 +1,8 @@
+id: T019
+agent: ppa
+title: What is the status of that payment?
+user: What is the status of that payment?
+script:
+  - tool: get_payment_status
+    arguments: {}
+contains: "COMPLETED"

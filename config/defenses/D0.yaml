@@ -1,0 +1,10 @@
+# Defense profile D0 — None (SPEC §9).
+# Raw tool outputs flow into the model context; every tool call is allowed.
+# This is the baseline against which D1–D10 are measured (added in M6).
+id: D0
+name: None
+layer: none
+description: >-
+  No defense. Raw tool outputs into context. Implemented by
+  agentbank_gateway.NoDefense.
+plugin: agentbank_gateway.NoDefense

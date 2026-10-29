@@ -1,0 +1,51 @@
+# Audit event catalog (SPEC §12, AU-2).
+events:
+- name: prompt_submitted
+  source: agent-gateway
+  attributes:
+  - run_id
+  - prompt_hash
+  - ts_utc
+  control: AU-2
+- name: model_response
+  source: agent-gateway
+  attributes:
+  - run_id
+  - outcome
+  control: AU-2
+- name: tool_call
+  source: agent-gateway
+  attributes:
+  - run_id
+  - tool
+  - risk
+  - outcome
+  control: AU-6(9)
+- name: consent_change
+  source: bank-core
+  attributes:
+  - customer
+  - consent_id
+  - outcome
+  control: AU-2
+- name: iso_message
+  source: switch
+  attributes:
+  - message_id
+  - sender
+  - hash
+  control: AU-2
+- name: ops_action
+  source: bank-core
+  attributes:
+  - staff_id
+  - action
+  - outcome
+  control: AU-2
+- name: identity_admin
+  source: keycloak
+  attributes:
+  - actor
+  - target
+  - outcome
+  control: AC-2(4)

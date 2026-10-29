@@ -1,0 +1,12 @@
+# PayPath — payment initiator PSP ("pay-by-bank") (SPEC §3.2). All data is fictitious.
+id: psp-pis
+name: PayPath
+role: payment_initiator
+contact_email: support@psp-pis.test
+fdx_scopes:
+  - payments            # initiate
+  - payment-networks    # read
+  - accounts            # minimal
+access: write
+agent: ppa              # PayPath Payment Agent (SPEC §7)
+merchant_intake: merchant/v1/invoices   # merchant-sim posts invoices (attacker text)

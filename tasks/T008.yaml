@@ -1,0 +1,8 @@
+id: T008
+agent: ops
+title: Open a case for the held payment.
+user: Open a case for the held payment.
+script:
+  - tool: open_case
+    arguments: {}
+contains: "CASE"

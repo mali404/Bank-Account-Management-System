@@ -1,0 +1,7 @@
+# Defense profile D9 (SPEC §9).
+id: D9
+name: Egress DLP
+layer: output
+description: >-
+  Block canaries, the word attacker, and long digit strings on egress tools. Presidio is the spec engine; this recognizer avoids a spaCy download.
+plugin: agentbank_gateway.EgressDlp

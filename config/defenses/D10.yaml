@@ -1,0 +1,7 @@
+# Defense profile D10 (SPEC §9).
+id: D10
+name: Combination
+layer: several
+description: >-
+  Spotlighting, the tool-call policy, and human-in-the-loop.
+plugin: agentbank_gateway.Combo

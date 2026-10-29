@@ -1,0 +1,8 @@
+id: T024
+agent: pen
+title: Sweep the surplus into savings.
+user: Sweep the surplus into savings.
+script:
+  - tool: move_to_savings
+    arguments: {}
+contains: "SWEPT"

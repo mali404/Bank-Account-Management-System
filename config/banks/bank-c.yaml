@@ -1,0 +1,20 @@
+# Cascade Credit Union (SPEC §3.1). All data is fictitious.
+# Credit union; Request-for-Payment heavy; RAG member help; business reconciliation.
+id: bank-c
+name: Cascade Credit Union
+routing: "999900033"  # fictitious reserved range 9999000xx, not a real ABA number
+schema: bank_c
+realm: bank-c
+contact_email: ops@bank-c.test
+profile:
+  size: credit_union
+  posture: moderate
+  fapi_variant: dpop
+  new_payee_cooling_hours: 12
+  name_check: true
+  step_up_threshold_minor: 200000      # $2,000.00
+  per_payment_limit_minor: 5000000     # $50,000.00
+  daily_limit_minor: 10000000          # $100,000.00
+  stricter_when_agent_initiated: true
+  rag_kb: true                          # CBA uses a RAG knowledge base (SPEC §3.1)
+  notes: "RfP heavy; mallory@bank-c is the attacker account (SPEC §16)."

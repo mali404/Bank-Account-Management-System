@@ -1,0 +1,5 @@
+# Overlay: local LLM serving (Ollama / vLLM). Populated in a later milestone
+# (SPEC §13, §15). Use with: docker compose -f compose.yaml -f compose.llm.yaml ...
+# Empty for now so `docker compose config` validates.
+name: agentbank
+services: {}

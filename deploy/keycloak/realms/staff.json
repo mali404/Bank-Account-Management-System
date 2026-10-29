@@ -1,0 +1,13 @@
+{
+  "realm": "staff",
+  "enabled": true,
+  "displayName": "Bank Staff",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": []
+  },
+  "users": [],
+  "clients": []
+}

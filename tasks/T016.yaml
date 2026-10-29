@@ -1,0 +1,8 @@
+id: T016
+agent: ppa
+title: Which checkout invoices are waiting?
+user: Which checkout invoices are waiting?
+script:
+  - tool: list_invoices
+    arguments: {}
+contains: "INV-200"
