@@ -13,8 +13,9 @@ COMPOSE_FILE := deploy/compose.yaml
 COMPOSE := docker compose --project-name $(PROJECT) --env-file .env -f $(COMPOSE_FILE)
 COMPOSE_OVERLAYS := deploy/compose.llm.yaml deploy/compose.obs.yaml deploy/compose.mojaloop.yaml
 
-.PHONY: help bootstrap up down ps logs health pki-root test test-compose lint format \
-        typecheck check compose-config clean seed reset bench report controls-check
+.PHONY: help bootstrap up down ps logs health pki-root test test-compose test-iso lint format \
+        typecheck check compose-config clean seed reset bench report controls-check \
+        iso-gen iso-setup xsd-install xsd-verify xsd-fetch
 
 help: ## Show this help
 	@echo "AgentBank-Sec Testbed — make targets:"
@@ -43,11 +44,31 @@ health: ## Print the health of each service
 pki-root: ## Export the step-ca root cert (stack must be running); not required by `up`
 	@bash deploy/pki/export-root.sh
 
-test: ## Run unit tests (no docker/network)
+ISO_GEN_MARKER := libs/agentbank_iso/src/agentbank_iso/gen/pacs008_001_08
+
+test: ## Run unit tests (no docker/network; needs `make bootstrap` or `make iso-setup` once)
+	@test -d $(ISO_GEN_MARKER) || { echo "ISO bindings missing: run 'make iso-setup' (or 'make bootstrap')"; exit 1; }
 	@uv run pytest
 
 test-compose: ## Live checks against the running stack (docker required)
 	@uv run pytest -m compose
+
+test-iso: ## Run the ISO 20022 acceptance tests (1,000 Hypothesis cases/message)
+	@uv run pytest tests/unit/iso --hypothesis-show-statistics
+
+iso-gen: ## Regenerate the xsdata ISO bindings from iso20022/xsd (deterministic)
+	@bash scripts/gen_iso_bindings.sh
+
+iso-setup: xsd-install iso-gen ## Download + verify the ISO XSDs, then generate the bindings
+
+xsd-install: ## Download missing ISO XSDs from iso20022.org and verify SHA-256 (network)
+	@python3 scripts/fetch_xsd.py install
+
+xsd-verify: ## Offline: recompute SHA-256 of the local XSDs vs MANIFEST.yaml
+	@python3 scripts/fetch_xsd.py verify
+
+xsd-fetch: ## Re-download XSDs to a temp dir and compare hashes only (network)
+	@python3 scripts/fetch_xsd.py fetch
 
 lint: ## ruff check + ruff format --check
 	@uv run ruff check .

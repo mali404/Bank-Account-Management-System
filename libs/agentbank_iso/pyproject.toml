@@ -6,7 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = "Apache-2.0"
 authors = [{ name = "Munawar Ali" }]
-dependencies = []
+dependencies = [
+    "agentbank-common",
+    "xsdata>=26.10",
+    "xmlschema>=4.3",
+    "lxml>=5.2",
+    "pyyaml>=6.0",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -14,3 +20,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/agentbank_iso"]
+# gen/ is git-ignored (written by `make iso-setup` from the downloaded XSDs);
+# include it in built wheels anyway.
+artifacts = ["src/agentbank_iso/gen/**/*.py"]

@@ -81,6 +81,15 @@ else
   uv sync --all-packages
 fi
 
+# --- 3b. ISO 20022 schemas and bindings -------------------------------------
+# The XSDs are not redistributed in git: download them from iso20022.org,
+# verify each SHA-256 against iso20022/xsd/MANIFEST.yaml, then generate the
+# xsdata bindings from them.
+log "Installing ISO 20022 XSDs (verified against MANIFEST.yaml)"
+python3 scripts/fetch_xsd.py install
+log "Generating ISO 20022 bindings"
+bash scripts/gen_iso_bindings.sh
+
 # --- 4. pull images --------------------------------------------------------
 if [[ "${SKIP_DOCKER}" != "1" ]]; then
   log "Pulling compose images"

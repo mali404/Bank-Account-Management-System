@@ -22,6 +22,12 @@ dev = [
     "mypy>=1.11",
     "pyyaml>=6.0",
     "types-PyYAML>=6.0",
+    "lxml-stubs>=0.5",
+    # xsdata CLI extra is dev-only (binding generation); the runtime uses the
+    # base xsdata declared by agentbank-iso. xmlschema/lxml are runtime deps of
+    # agentbank-iso. hypothesis drives the ISO acceptance tests.
+    "xsdata[cli]==26.10",
+    "hypothesis>=6.100",
 ]
 
 [tool.uv.workspace]
@@ -46,9 +52,21 @@ build-backend = "hatchling.build"
 line-length = 100
 target-version = "py312"
 src = ["libs/*/src", "tests"]
+# Generated xsdata bindings are not hand-maintained; keep them out of lint/format.
+extend-exclude = ["libs/agentbank_iso/src/agentbank_iso/gen"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# These modules and tests deliberately contain Unicode confusables, tag chars
+# and bidi controls (homoglyph tables, injection payloads); the ambiguity is the
+# point, so the ambiguous-character lints do not apply.
+"libs/agentbank_iso/src/agentbank_iso/inject.py" = ["RUF001", "RUF002", "RUF003"]
+"libs/agentbank_iso/src/agentbank_iso/charset.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/unit/iso/test_iso_inject.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/unit/iso/test_iso_usage_rules.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/unit/iso/iso_strategies.py" = ["RUF001"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -75,6 +93,17 @@ mypy_path = [
 module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
+
+[[tool.mypy.overrides]]
+# Generated xsdata bindings: must still import cleanly under mypy, but relax the
+# strict-mode knobs that do not apply to machine-generated dataclasses.
+module = "agentbank_iso.gen.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+disallow_any_generics = false
+warn_return_any = false
+disallow_subclassing_any = false
 
 [tool.pytest.ini_options]
 minversion = "8.0"
