@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestones **M0** through **M7** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, the six LangGraph agents on the benign tasks, the bankbench catalog, defenses D1-D10, and the controls, tracing, and adapter smokes). `make test` and `make controls-check` pass. Milestone **M8 is pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0** through **M8** are complete. `make test` and `make controls-check` pass. Stretch items that stay off are the Mojaloop overlay, the Canada profile, and the browser channel; signed instructions, the A2A envelope, and those off switches are covered by `tests/unit/test_m8_acceptance.py`. The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -102,7 +102,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | **M5** | bankbench: S01–S24, oracles, mock runner, parquet report | ✅ done |
 | **M6** | Defenses D1-D10, tool-call policy, HITL | ✅ done |
 | **M7** | OTel spans, NIST controls, OpenAI Agents SDK, adapter smokes | ✅ done |
-| M8 | Stretch (Mojaloop, signed instructions, …) | ⬜ planned |
+| **M8** | Signed instructions, A2A envelope; Mojaloop, Canada, and web channel left off | ✅ done |
 
 See [`docs/milestones.md`](docs/milestones.md) and [`SPEC.md`](SPEC.md) §18.
 

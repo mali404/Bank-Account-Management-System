@@ -12,7 +12,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ✅ done |
 | **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ✅ done |
 | **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ✅ done |
-| **M8** | Stretch: Mojaloop overlay, AU-10 signed instructions, Canada CDB profile, A2A protocol, web-agent channel | ⬜ planned |
+| **M8** | Stretch: Mojaloop overlay, AU-10 signed instructions, Canada CDB profile, A2A protocol, web-agent channel | ✅ done |
 
 **Definition of done (v1.0 = M0–M7):** a fresh clone runs
 `make bootstrap up seed bench MODEL=<local> DEFENSE=D0,D4` and produces
@@ -89,3 +89,11 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - An agent run records an in-memory OpenTelemetry span with `run_id`, `task_id`, `defense_profile`, and `prompt_hash`. Jaeger, the collector, OpenSearch, and Prometheus are pinned in `deploy/compose.obs.yaml` and are not started by `make up`.
 - The OpenAI Agents SDK runs the rent-invoice task on a scripted model, with no API key, and the reply contains account `200000001` (`tests/unit/test_m7_acceptance.py`).
 - AgentDojo, garak, PyRIT, promptfoo, and Inspect adapters each return a smoke payload. They do not shell out to those projects.
+
+## M8 acceptance
+
+- A payment instruction signs and verifies as a compact JWS (`agentbank_fdx.instructions`). A flipped signature fails. The switch still accepts unsigned pacs.008 (`tests/unit/test_m8_acceptance.py`).
+- `config/profiles/canada-cdb.yaml` is read-only and not the default. The running banks stay on the US FDX-inspired profile.
+- `parse_message` reads an agent-to-agent envelope with sender, recipient, and text. It is not a full A2A stack.
+- `config/channels/web.yaml` leaves the browser channel off. No page driver is started.
+- `deploy/compose.mojaloop.yaml` stays an empty overlay. Mojaloop is not vendored; SimNow remains the switch. See [`deploy/mojaloop/README.md`](../deploy/mojaloop/README.md).
