@@ -10,7 +10,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS | ✅ done |
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ✅ done |
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ✅ done |
-| **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ⬜ planned |
+| **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ✅ done |
 | **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ⬜ planned |
 | **M8** | Stretch: Mojaloop overlay, AU-10 signed instructions, Canada CDB profile, A2A protocol, web-agent channel | ⬜ planned |
 
@@ -74,3 +74,11 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - Every oracle has a forced-success snapshot and a forced-failure snapshot.
 - `write_run` writes `results.parquet` in `RESULTS_COLUMN_NAMES` order and a `report.md` with ASR, BU, UA, UTV, and Wilson 95% intervals.
 - `make bench` and `make report` call `python -m bankbench`. See [`bankbench/README.md`](../bankbench/README.md).
+
+## M6 acceptance
+
+- D1-D10 are registered next to D0 (`tests/unit/test_m6_acceptance.py`). Each one blocks its targeted scenario under the mock model, and the benign twin of that scenario keeps utility.
+- False-positive rate on the 30 benign tasks, with the careful user-sim, is 0 for D0-D10. Fatigue still refuses the first two HITL prompts; always-approve still accepts an untrusted write, which is the HITL bypass case.
+- D4's deny reasons match `deploy/opa/policies/tool_call.rego`. The suite runs `agentbank_gateway.policy.decide`. OPA itself is not started.
+- D3 is a pattern detector. ProtectAI weights are not loaded (license not verified). Meta Prompt Guard 2 is called out as Llama-licensed, not OSI. D9 matches canaries and long digit strings; Presidio is not installed. D6 enforces the CaMeL rule on tainted sensitive fields and does not vendor the research interpreter.
+- A run with more than one profile writes a D0 vs Dx ASR/BU/UA table. `make bench` also writes the benign false-positive rate.

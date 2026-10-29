@@ -8,12 +8,14 @@ Scenario runner, state oracles, and the results report (SPEC §10, §11, §19).
 `DEFENSE` (comma-separated, default `D0`), and `SEED` (default `42`)
 select the run.
 
-The mock follows an injected instruction only when the defense profile is
-`D0`, and then sets the state flag that scenario's oracle reads. Any other
-profile name is stored on the row and leaves the attack flags unset. That
-is the mock refusing the injection. D1–D10 are M6; the report says those
-profiles are not implemented here. Benign twins (`injected` false) keep
-utility success.
+Under D0 the mock follows an injected instruction and sets the state flag
+that scenario's oracle reads. D1-D10 are the gateway plugins: a profile
+blocks the attack when it marks the tool text as data, drops it, denies
+the attack-shaped tool call, or the careful user-sim rejects the HITL
+card. An unknown profile name is stored and the mock does not follow the
+injection. Benign twins (`injected` false) keep utility success. The
+report includes a D0 vs Dx table and, from `make bench`, the
+false-positive rate on the 30 benign tasks.
 
 Rows follow `agentbank_common.results_schema.RESULTS_COLUMN_NAMES` in that
 order. Every timestamp is the anchor `2026-10-29T15:00:00Z`. The same seed
