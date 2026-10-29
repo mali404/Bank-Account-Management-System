@@ -84,7 +84,7 @@ fi
 # --- 4. pull images --------------------------------------------------------
 if [[ "${SKIP_DOCKER}" != "1" ]]; then
   log "Pulling compose images"
-  docker compose --project-name agentbank --env-file .env -f deploy/compose.yaml pull
+  docker compose --project-name "${AGENTBANK_PROJECT:-agentbank}" --env-file .env -f deploy/compose.yaml pull
 else
   log "SKIP_DOCKER=1 — skipping image pull"
 fi

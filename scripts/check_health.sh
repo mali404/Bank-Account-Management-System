@@ -6,7 +6,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "${repo_root}"
 
-compose=(docker compose --project-name agentbank --env-file .env -f deploy/compose.yaml)
+compose=(docker compose --project-name "${AGENTBANK_PROJECT:-agentbank}" --env-file .env -f deploy/compose.yaml)
 
 services=(postgres nats keycloak step-ca)
 rc=0

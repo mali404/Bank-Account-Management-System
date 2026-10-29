@@ -31,6 +31,19 @@ Only the core infrastructure: Keycloak, PostgreSQL, NATS JetStream, and step-ca
 Keycloak is host-exposed (on `127.0.0.1`); the others are reached via
 `docker compose exec`. The application services arrive in later milestones.
 
+## Configuration
+
+Set `AGENTBANK_PROJECT` (default `agentbank`) to change the Docker Compose
+project name, so several checkouts can run side by side on one host without
+colliding containers, networks or volumes:
+
+```sh
+AGENTBANK_PROJECT=agentbank-pr42 make up
+```
+
+The Makefile exports it, so the helper scripts invoked by `make health`,
+`make pki-root` and `make test-compose` all use the same project name.
+
 ## Useful targets
 
 | Command | What it does |

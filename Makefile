@@ -4,7 +4,11 @@
 SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
 
-PROJECT := agentbank
+# Compose project name. Override with AGENTBANK_PROJECT=... (or PROJECT=...) so
+# several checkouts can run side by side on one host. Exported so the helper
+# scripts (bootstrap.sh, check_health.sh, export-root.sh) agree with the Makefile.
+PROJECT ?= $(or $(AGENTBANK_PROJECT),agentbank)
+export AGENTBANK_PROJECT := $(PROJECT)
 COMPOSE_FILE := deploy/compose.yaml
 COMPOSE := docker compose --project-name $(PROJECT) --env-file .env -f $(COMPOSE_FILE)
 COMPOSE_OVERLAYS := deploy/compose.llm.yaml deploy/compose.obs.yaml deploy/compose.mojaloop.yaml

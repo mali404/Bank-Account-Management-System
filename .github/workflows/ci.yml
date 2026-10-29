@@ -45,7 +45,7 @@ jobs:
         run: make test-compose
       - name: Dump compose logs on failure
         if: failure()
-        run: docker compose --project-name agentbank --env-file .env -f deploy/compose.yaml logs
+        run: docker compose --project-name "${AGENTBANK_PROJECT:-agentbank}" --env-file .env -f deploy/compose.yaml logs
       - name: Tear down
         if: always()
         run: make down

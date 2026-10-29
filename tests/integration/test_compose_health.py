@@ -8,6 +8,7 @@ available or the stack is not running.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -17,11 +18,12 @@ import pytest
 pytestmark = pytest.mark.compose
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+PROJECT = os.environ.get("AGENTBANK_PROJECT", "agentbank")
 COMPOSE = [
     "docker",
     "compose",
     "--project-name",
-    "agentbank",
+    PROJECT,
     "--env-file",
     str(REPO_ROOT / ".env"),
     "-f",

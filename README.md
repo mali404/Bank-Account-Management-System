@@ -28,6 +28,20 @@ make test         # run the unit test suite
 
 `make help` lists all targets. Run `make down` to stop the stack.
 
+## Configuration
+
+| Variable | Default | Effect |
+|---|---|---|
+| `AGENTBANK_PROJECT` | `agentbank` | Docker Compose project name. Override it to run several checkouts side by side on one host without their containers, networks or volumes colliding. |
+| `SKIP_DOCKER` | `0` | Set to `1` so `make bootstrap` skips all docker steps (for machines without docker, e.g. the lint-only CI job). |
+
+```sh
+AGENTBANK_PROJECT=agentbank-pr42 make up   # isolated stack for this checkout
+```
+
+The Makefile exports `AGENTBANK_PROJECT` so the helper scripts (`make health`,
+`make pki-root`, …) use the same project name.
+
 ## Services and ports (M0 core infra)
 
 Per SPEC §15, `bank-net`/`switch-net`/`agent-net` are `internal`, and a container

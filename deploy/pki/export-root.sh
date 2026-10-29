@@ -14,7 +14,7 @@ out_dir="deploy/pki/out"
 out_file="${out_dir}/root_ca.crt"
 container_root="/home/step/certs/root_ca.crt"
 
-compose=(docker compose --project-name agentbank --env-file .env -f deploy/compose.yaml)
+compose=(docker compose --project-name "${AGENTBANK_PROJECT:-agentbank}" --env-file .env -f deploy/compose.yaml)
 
 mkdir -p "${out_dir}"
 
