@@ -112,5 +112,5 @@ bench: ## (M5) Run bankbench and write results/<run>/report.md
 report: ## (M5) Render the bankbench report for MODEL and DEFENSE
 	uv run python -m bankbench --model $(MODEL) --defense $(DEFENSE) --seed $(SEED)
 
-controls-check: ## (M7) Verify NIST controls against OSCAL — not implemented yet
-	@echo "controls-check: not implemented yet (milestone M7)"; exit 1
+controls-check: ## (M7) Verify NIST baselines against the vendored OSCAL profiles
+	uv run python controls/check_baselines.py

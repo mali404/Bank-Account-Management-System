@@ -99,7 +99,13 @@ disallow_untyped_defs = false
 disallow_incomplete_defs = false
 
 [[tool.mypy.overrides]]
-module = ["pyarrow", "pyarrow.*", "yaml", "yaml.*"]
+module = ["pyarrow", "pyarrow.*", "yaml", "yaml.*", "opentelemetry", "opentelemetry.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "bankbench.frameworks.openai_agents"
+disallow_subclassing_any = false
+disallow_untyped_defs = false
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]

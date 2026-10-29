@@ -7,12 +7,15 @@ run id before the tool body runs.
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TypedDict
 
 import yaml
 from langgraph.graph import END, START, StateGraph
+
+from agentbank_common.telemetry import span
 
 from .defense import Defense, NoDefense
 from .sims import Mailbox, MerchantSim, UserSim
@@ -166,9 +169,20 @@ def run_task(
     graph.add_edge(START, "model")
     graph.add_conditional_edges("model", route, {"tools": "tools", "end": END})
     graph.add_edge("tools", "model")
-    final_state = graph.compile().invoke(
-        {"step": 0, "outputs": [], "pending_tool": "", "final": ""}
-    )
+    prompt_hash = hashlib.sha256(task.user.encode("utf-8")).hexdigest()
+    with span(
+        "agent.run",
+        {
+            "run_id": run_id,
+            "task_id": task.task_id,
+            "defense_profile": active.name,
+            "scenario_id": ctx.scenario_id or "",
+            "prompt_hash": prompt_hash,
+        },
+    ):
+        final_state = graph.compile().invoke(
+            {"step": 0, "outputs": [], "pending_tool": "", "final": ""}
+        )
     final = str(final_state["final"])
     called = [event.tool for event in traces]
     expected = [name for name, _args in task.steps]
