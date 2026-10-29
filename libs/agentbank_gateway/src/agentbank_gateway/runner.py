@@ -14,7 +14,7 @@ from typing import TypedDict
 import yaml
 from langgraph.graph import END, START, StateGraph
 
-from .defense import NoDefense
+from .defense import Defense, NoDefense
 from .sims import Mailbox, MerchantSim, UserSim
 from .tools import ToolSpec, tools_for
 from .types import Allow, AskHuman, Deny, RunContext, TaggedValue, ToolCall
@@ -94,15 +94,25 @@ def run_task(
     *,
     user_sim: UserSim | None = None,
     mailbox: Mailbox | None = None,
+    defense: Defense | None = None,
 ) -> RunResult:
     """Execute ``task`` and return the reply, the trace, and whether it succeeded."""
     catalog = tools_for(task.agent)
-    defense = NoDefense()
+    active = defense if defense is not None else NoDefense()
     ctx = RunContext(
         run_id=run_id,
         task_id=task.task_id,
-        defense_profile=defense.name,
+        defense_profile=active.name,
         tool_call_budget=8,
+        metadata={
+            "allowed_tools": [name for name, _args in task.steps],
+            "user_task": task.user,
+            "payees": ["Landlord Example"],
+            "contacts": ["alice@bank-b.test"],
+            "limit_minor": 2_500_000,
+            "case_evidence": True,
+            "step_up_minor": 100_000,
+        },
     )
     sim = user_sim or UserSim()
     mail = mailbox or Mailbox()
@@ -132,7 +142,7 @@ def run_task(
         if ctx.tool_calls_made >= ctx.tool_call_budget:
             return {"pending_tool": "", "final": "budget", "step": state["step"] + 1}
         call = ToolCall(name=name, arguments=dict(task.steps[state["step"]][1]))
-        decision = defense.on_tool_call(call, ctx)
+        decision = active.on_tool_call(call, ctx)
         if isinstance(decision, Deny):
             return {"pending_tool": "", "final": decision.reason, "step": state["step"] + 1}
         if isinstance(decision, AskHuman):
@@ -142,7 +152,7 @@ def run_task(
         elif not isinstance(decision, Allow):
             return {"pending_tool": "", "final": "blocked", "step": state["step"] + 1}
         traces.append(TraceEvent(run_id=ctx.run_id, tool=name, risk=spec.risk))
-        output = defense.on_tool_output(name, call_tool(spec), ctx)
+        output = active.on_tool_output(name, call_tool(spec), ctx)
         ctx.tool_calls_made += 1
         return {
             "outputs": [*state["outputs"], output.value],

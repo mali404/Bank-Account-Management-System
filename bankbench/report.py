@@ -15,7 +15,11 @@ from .runner import RunRow
 __all__ = ["write_run"]
 
 
-def write_run(rows: list[RunRow], directory: Path) -> Path:
+def write_run(
+    rows: list[RunRow],
+    directory: Path,
+    false_positives: dict[str, float] | None = None,
+) -> Path:
     """Write the parquet file and the markdown report. Returns the report path."""
     directory.mkdir(parents=True, exist_ok=True)
     payload = [row.as_dict() for row in rows]
@@ -24,11 +28,11 @@ def write_run(rows: list[RunRow], directory: Path) -> Path:
     table = table.select(list(RESULTS_COLUMN_NAMES))
     pq.write_table(table, directory / "results.parquet")
     report = directory / "report.md"
-    report.write_text(_markdown(payload), encoding="utf-8")
+    report.write_text(_markdown(payload, false_positives or {}), encoding="utf-8")
     return report
 
 
-def _markdown(rows: list[dict[str, object]]) -> str:
+def _markdown(rows: list[dict[str, object]], false_positives: dict[str, float]) -> str:
     injected = [row for row in rows if row["injected"] is True]
     benign = [row for row in rows if row["injected"] is False]
     asr, asr_lo, asr_hi = _rate(injected, "attack_success")
@@ -42,9 +46,9 @@ def _markdown(rows: list[dict[str, object]]) -> str:
     lines = [
         "# bankbench report",
         "",
-        "Rates use a Wilson 95% interval. The mock model follows an injection",
-        "only when the defense profile is D0. Other profiles are recorded and",
-        "left unimplemented until their milestone.",
+        "Rates use a Wilson 95% interval. The mock follows an injection under D0.",
+        "D1-D10 are the gateway plugins. An unknown profile name is recorded",
+        "and the mock does not follow the injection.",
         "",
         "| metric | value | ci_low | ci_high |",
         "|---|---:|---:|---:|",
@@ -53,10 +57,49 @@ def _markdown(rows: list[dict[str, object]]) -> str:
         f"| UA | {ua:.4f} | {ua_lo:.4f} | {ua_hi:.4f} |",
         f"| UTV | {utv:.2f} |  |  |",
         "",
+        *_defense_table(rows),
+        "",
+        *_fp_table(false_positives),
         f"Rows: {len(rows)}.",
         "",
     ]
     return "\n".join(lines)
+
+
+def _fp_table(false_positives: dict[str, float]) -> list[str]:
+    if not false_positives:
+        return []
+    lines = [
+        "False-positive rate on the 30 benign tasks (careful user-sim).",
+        "",
+        "| defense | FP |",
+        "|---|---:|",
+    ]
+    for name, rate in false_positives.items():
+        lines.append(f"| {name} | {rate:.4f} |")
+    lines.append("")
+    return lines
+
+
+def _defense_table(rows: list[dict[str, object]]) -> list[str]:
+    names: list[str] = []
+    for row in rows:
+        name = str(row["defense_profile"])
+        if name not in names:
+            names.append(name)
+    lines = [
+        "D0 vs Dx attack success (ASR), benign utility (BU), and utility under attack (UA).",
+        "",
+        "| defense | ASR | BU | UA |",
+        "|---|---:|---:|---:|",
+    ]
+    for name in names:
+        subset = [row for row in rows if row["defense_profile"] == name]
+        asr, _, _ = _rate([row for row in subset if row["injected"] is True], "attack_success")
+        bu, _, _ = _rate([row for row in subset if row["injected"] is False], "utility_success")
+        ua, _, _ = _rate([row for row in subset if row["injected"] is True], "utility_success")
+        lines.append(f"| {name} | {asr:.4f} | {bu:.4f} | {ua:.4f} |")
+    return lines
 
 
 def _rate(rows: list[dict[str, object]], key: str) -> tuple[float, float, float]:

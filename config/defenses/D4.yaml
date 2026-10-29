@@ -1,0 +1,7 @@
+# Defense profile D4 (SPEC §9).
+id: D4
+name: Tool-call policy
+layer: action
+description: >-
+  Python decision point matching deploy/opa/policies/tool_call.rego.
+plugin: agentbank_gateway.PolicyFilter

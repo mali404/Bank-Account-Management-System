@@ -126,7 +126,7 @@ def test_mock_follows_injection_only_under_d0() -> None:
             assert row["attack_success"] is True
             assert row["harm"] is True
         else:
-            # D4 is recorded. The mock does not implement that profile.
+            # D4 denies the attack-shaped tool call. Benign utility stays.
             assert row["defense_profile"] == "D4"
             assert row["attack_success"] is False
             assert row["utility_success"] is True

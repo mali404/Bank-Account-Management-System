@@ -1,0 +1,7 @@
+# Defense profile D6 (SPEC §9).
+id: D6
+name: CaMeL-style
+layer: system
+description: >-
+  Refuse a sensitive field filled from untrusted data. The research interpreter is not vendored.
+plugin: agentbank_gateway.Camel

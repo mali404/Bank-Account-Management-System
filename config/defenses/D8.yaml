@@ -1,0 +1,7 @@
+# Defense profile D8 (SPEC §9).
+id: D8
+name: Bank controls
+layer: system
+description: >-
+  New-payee cooling, payee name check, and step-up for agent-initiated payments.
+plugin: agentbank_gateway.BankControls
