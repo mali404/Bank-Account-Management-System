@@ -1,0 +1,8 @@
+# Canada consumer-driven banking profile (SPEC §1.1, §20).
+# Section 20 keeps this out of the running banks. The US FDX-inspired
+# profile is what bank-a, bank-b, and bank-c use.
+id: canada-cdb
+status: read-only
+default: false
+notes: >-
+  Recorded so the profile has a place in the tree. No bank loads it.

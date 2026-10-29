@@ -23,6 +23,7 @@ from agentbank_fdx.fapi import (
     sign_client_assertion,
     sign_dpop,
 )
+from agentbank_fdx.instructions import sign_instruction, verify_instruction
 from agentbank_fdx.token_store import open_token, seal_token
 from agentbank_gateway import get_defense
 from agentbank_gateway.runner import load_tasks, run_task
@@ -207,7 +208,10 @@ def _au9() -> None:
 def _au10() -> None:
     entry = _entry("AU-10")
     assert entry["baseline"] == ["high"]
-    assert "M8" in str(entry["implementation"])
+    private = generate_p256()
+    public = private.public_key()
+    token = sign_instruction({"uetr": "au10", "amount_minor": 100}, private)
+    assert verify_instruction(token, public)["uetr"] == "au10"
 
 
 def _au11() -> None:

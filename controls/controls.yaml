@@ -136,7 +136,7 @@ controls:
 - id: AU-10
   baseline:
   - high
-  implementation: JWS-signed payment instructions are an M8 stretch
+  implementation: JWS compact serialization in agentbank_fdx.instructions; the switch still accepts unsigned pacs.008
   relevance: Who initiated a payment
   evidence_test: tests/controls/test_au_10.py
 - id: AU-11
