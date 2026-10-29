@@ -28,6 +28,7 @@ dev = [
     # agentbank-iso. hypothesis drives the ISO acceptance tests.
     "xsdata[cli]==26.10",
     "hypothesis>=6.100",
+    "faker>=24",
 ]
 
 [tool.uv.workspace]
