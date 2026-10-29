@@ -5,9 +5,81 @@
   "sslRequired": "external",
   "registrationAllowed": false,
   "loginWithEmailAllowed": true,
-  "roles": {
-    "realm": []
-  },
+  "roles": {"realm": []},
   "users": [],
-  "clients": []
+  "clients": [
+    {
+      "clientId": "psp-pis",
+      "name": "PayPath",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-jwt",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["https://psp-pis.test/cb"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "require.pushed.authorization.requests": "true",
+        "dpop.bound.access.tokens": "false",
+        "tls.client.certificate.bound.access.tokens": "true"
+      }
+    },
+    {
+      "clientId": "psp-pfm",
+      "name": "Penny",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-jwt",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["https://psp-pfm.test/cb"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "require.pushed.authorization.requests": "true",
+        "dpop.bound.access.tokens": "false",
+        "tls.client.certificate.bound.access.tokens": "true"
+      }
+    },
+    {
+      "clientId": "psp-agg",
+      "name": "LedgerLink",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-jwt",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["https://psp-agg.test/cb"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "require.pushed.authorization.requests": "true",
+        "dpop.bound.access.tokens": "false",
+        "tls.client.certificate.bound.access.tokens": "true"
+      }
+    }
+  ],
+  "clientScopes": [
+    {"name": "fdx:accounts:read", "protocol": "openid-connect"},
+    {"name": "fdx:payments", "protocol": "openid-connect"},
+    {"name": "fdx:transactions:read", "protocol": "openid-connect"}
+  ],
+  "clientPolicies": {
+    "policies": [
+      {
+        "name": "fapi-2-security-profile",
+        "description": "FAPI 2.0 security profile with mTLS-bound tokens for Aurora National Bank.",
+        "enabled": true,
+        "profiles": ["fapi-2-security-profile"],
+        "conditions": [{"condition": "any-client", "configuration": {}}]
+      }
+    ]
+  }
 }

@@ -7,7 +7,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M0** | Skeleton: repo layout, uv workspace, Apache-2.0 LICENSE/NOTICE, CI (ruff, mypy, pytest), compose with Postgres/NATS/Keycloak/step-ca healthy | ✅ done |
 | **M1** | ISO 20022 library: xsdata bindings, builders/parsers, validator, usage rules, inject helpers, MANIFEST | ✅ done |
 | **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ✅ done |
-| **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS, prowide cross-validator | ⬜ planned |
+| **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS | ✅ done |
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ⬜ planned |
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ⬜ planned |
 | **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ⬜ planned |
@@ -46,3 +46,14 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - pain.013 is forwarded, pain.014 is answered, and paying the RfP ends in `ACSC`.
 - `World.reset` and `make reset` (`scripts/reset_state.py`) restore the seed snapshot in under 30 seconds. `seed_world(..., 42)` is deterministic.
 - The three banks and the switch run in one process (`agentbank_ledger.world.World`). Settlement follows TigerBeetle's pending / post / void counters and does not connect to a TigerBeetle cluster. See [`libs/agentbank_ledger/README.md`](../libs/agentbank_ledger/README.md).
+
+## M3 acceptance
+
+- A DPoP-scheme token presented to bank-b without a `DPoP` proof, or as `Bearer`, is 401. The same call with a proof whose `htm`, `htu`, and `ath` match is 200 (`tests/unit/test_m3_acceptance.py`).
+- Replaying that proof (`jti`) is 401.
+- `GET /oauth/authorize` without a PAR `request_uri` is 400. `client_secret` on the token endpoint is 401; `private_key_jwt` is what issues the token.
+- A payment above the consent `perPaymentMinor` is 403 `CONSENT_LIMIT`. After revocation the same consent is 403 `CONSENT_REVOKED`. No camt.054 is stored.
+- A PSP payment inside the consent settles `COMPLETED` and the creditor bank holds a camt.054 (`BkToCstmrDbtCdtNtfctn`).
+- Bank-a rejects a token whose `X-Client-Cert-Sha256` does not match `cnf.x5t#S256`.
+- Realm JSON names `fapi-2-security-profile` (bank-a) and `fapi-2-dpop-security-profile` (bank-b, bank-c) and registers the three PSP clients with no secrets.
+- The prowide sidecar is not wired: Maven Central has `pw-iso20022` `SRU2024-10.2.7`, and the SRU2025-10.4 line in SPEC §6.2 is not published there. See [`services/iso-validator/README.md`](../services/iso-validator/README.md). OIDF conformance against a live Keycloak is manual.
