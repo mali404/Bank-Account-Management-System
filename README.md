@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestone **M0 (skeleton) is complete** — the uv workspace, core libraries, CI, and a docker compose core stack (Postgres, NATS, Keycloak, step-ca) come up healthy, and `make test` passes. Milestones **M1–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0 (skeleton)** and **M1 (ISO 20022 library)** are complete. The uv workspace, core libraries, CI, and a docker compose core stack (Postgres, NATS, Keycloak, step-ca) come up healthy; `make iso-setup` fetches the ISO 20022 XSDs and generates the bindings; `make test` passes, including the Hypothesis round-trip (1,000 cases per §6.1 message). Milestones **M2–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -70,8 +70,14 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | `logs` | Tail compose logs |
 | `health` | Print the health of each service |
 | `pki-root` | Export the step-ca root cert to `deploy/pki/out/` (stack must be up) |
-| `test` | Run unit tests (no docker/network) |
+| `test` | Run unit tests (no docker/network; needs `make iso-setup` once) |
+| `test-iso` | ISO 20022 acceptance tests, with Hypothesis statistics |
 | `test-compose` | Live checks against the running stack (docker required) |
+| `iso-setup` | Download and SHA-256-verify the ISO XSDs, then generate bindings |
+| `iso-gen` | Regenerate xsdata bindings from the local XSDs |
+| `xsd-install` | Download missing XSDs from iso20022.org and verify SHA-256 |
+| `xsd-verify` | Offline: recompute SHA-256 of the local XSDs against the manifest |
+| `xsd-fetch` | Re-download XSDs to a temp dir and compare hashes only |
 | `lint` | `ruff check` + `ruff format --check` |
 | `format` | Apply `ruff format` |
 | `typecheck` | `mypy` (strict) |
@@ -85,7 +91,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | M | Deliverable | Status |
 |---|---|---|
 | **M0** | Skeleton: repo layout, uv workspace, LICENSE/NOTICE, CI, core compose healthy | ✅ done |
-| M1 | ISO 20022 library | ⬜ planned |
+| **M1** | ISO 20022 library: bindings, builders/parsers, validator, usage rules, inject, manifest | ✅ done |
 | M2 | Banks + switch | ⬜ planned |
 | M3 | FDX + FAPI 2.0 | ⬜ planned |
 | M4 | Agents + MCP | ⬜ planned |
@@ -104,7 +110,7 @@ config/     bank / PSP / switch / model / defense configuration
 libs/       Python workspace packages (agentbank_common, _iso, _fdx, _ledger, _gateway)
 services/   FastAPI + MCP services (filled M2–M4)
 agents/     LLM agent prompts and graphs (M4)
-iso20022/   ISO 20022 XSDs and manifest (M1)
+iso20022/   ISO 20022 manifest; XSDs fetched by `make iso-setup` (M1, not committed)
 scenarios/  attack scenario catalog S01–S24 (M5)
 tasks/      benign user tasks (M4)
 templates/  injection templates (M5)

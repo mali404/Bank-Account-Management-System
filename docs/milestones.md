@@ -5,7 +5,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | M | Deliverable | Status |
 |---|---|---|
 | **M0** | Skeleton: repo layout, uv workspace, Apache-2.0 LICENSE/NOTICE, CI (ruff, mypy, pytest), compose with Postgres/NATS/Keycloak/step-ca healthy | ✅ done |
-| **M1** | ISO 20022 library: xsdata bindings, builders/parsers, validator, usage rules, inject helpers, MANIFEST | ⬜ planned |
+| **M1** | ISO 20022 library: xsdata bindings, builders/parsers, validator, usage rules, inject helpers, MANIFEST | ✅ done |
 | **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ⬜ planned |
 | **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS, prowide cross-validator | ⬜ planned |
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ⬜ planned |
@@ -22,3 +22,15 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 
 - `make bootstrap up` is green on a clean machine.
 - `make test` passes.
+
+## M1 acceptance
+
+- `make iso-setup` downloads every SPEC §6.1 XSD from iso20022.org and checks
+  it against `iso20022/xsd/MANIFEST.yaml`; `make xsd-verify` then passes offline.
+- `make test` (Hypothesis profile `ci`, 1,000 examples per message) round-trips
+  every message, rejects the invalid fixtures with a field path, and enforces
+  the XSD `maxLength` limits (140 for `Nm` / `Ustrd`, 105 for `AddtlInf`, 500
+  for `AddtlNtryInf`, 350 for `RsnDesc`).
+- API, the field-limit table and the charset profiles are documented in
+  [`libs/agentbank_iso/README.md`](../libs/agentbank_iso/README.md). The schemas
+  themselves are fetched, not committed; see [`iso20022/README.md`](../iso20022/README.md).

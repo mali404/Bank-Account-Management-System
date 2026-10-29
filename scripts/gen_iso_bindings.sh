@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Regenerate the xsdata dataclass bindings for the SPEC §6.1 ISO 20022 message
-# set from the committed XSDs in iso20022/xsd/.
+# set from the fetched XSDs in iso20022/xsd/ (not committed; see iso20022/README.md).
 #
 # The generation is deterministic: a pinned xsdata version, one isolated
 # subpackage per message (agentbank_iso.gen.<msg>), and a defensive header strip

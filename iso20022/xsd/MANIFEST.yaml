@@ -1,14 +1,15 @@
 # ISO 20022 XSD manifest (SPEC §6.1).
 #
 # One entry per message in the SPEC §6.1 set, recording the exact XSD filename,
-# version, SHA-256 of the committed file, the free iso20022.org catalogue URL it
-# was downloaded from, the business area, and what the testbed uses it for.
+# version, SHA-256 of the official file, the iso20022.org catalogue URL it is
+# downloaded from, the business area, and what the testbed uses it for.
 #
-# Verify offline with `make xsd-verify` (recompute SHA-256 vs this file) or
-# re-download and compare with `make xsd-fetch` (needs network). The XSDs are
-# redistributed under the ISO 20022 IPR policy; see iso20022/README.md for the
-# required statement. Do not edit the .xsd files (their SHA-256 must match
-# upstream). [VERIFY] notes mark versions the spec flags as unconfirmed.
+# The .xsd files are not committed. Redistribution terms are unclear, so
+# `make iso-setup` fetches them and keeps a file only when its SHA-256 matches
+# this manifest. Verify offline with `make xsd-verify` or re-download and
+# compare with `make xsd-fetch` (needs network). See iso20022/README.md for the
+# source statement. Do not edit the .xsd files. [VERIFY] notes mark versions
+# the spec flags as unconfirmed.
 
 messages:
   - message: head.001.001.02
