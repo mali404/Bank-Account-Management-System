@@ -2,4 +2,4 @@
 
 Adapter using PyRIT orchestrators to drive adaptive attacks with oracle feedback (bankbench as a PyRIT target).
 
-Defined in SPEC §13 (also §10). Implemented in **M7**.
+`smoke()` returns an objective and a prompt. A live PyRIT orchestrator is not started.

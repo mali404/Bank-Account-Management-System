@@ -2,4 +2,4 @@
 
 Adapter exposing bankbench scenarios as an Inspect AI task.
 
-Defined in SPEC §13. Implemented in **M7**.
+`smoke()` returns one Inspect-shaped task id. It does not import Inspect.

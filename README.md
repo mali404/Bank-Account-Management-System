@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestones **M0** through **M6** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, the six LangGraph agents on the benign tasks, the bankbench catalog, and defenses D1-D10). `make test` passes, including the Hypothesis round-trip, the payment checks, the FAPI checks, the 30 benign tasks at reference-model utility 1.0, the 24 scenarios under the mock model, and a zero false-positive rate for D0-D10 on those tasks. Milestones **M7–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0** through **M7** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, the six LangGraph agents on the benign tasks, the bankbench catalog, defenses D1-D10, and the controls, tracing, and adapter smokes). `make test` and `make controls-check` pass. Milestone **M8 is pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -88,7 +88,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | `reset` | Restore `data/state` from that snapshot (budget 30 seconds) |
 | `bench` | Run S01–S24 with `MODEL` (default `mock-local`) and `DEFENSE` (default `D0`); writes `results/mock-<seed>-<defenses>/` |
 | `report` | Write the same parquet and `report.md` for the selected model and defenses |
-| `controls-check` | Not implemented yet (M7) |
+| `controls-check` | Check `controls/controls.yaml` against the vendored NIST OSCAL baselines |
 
 ## Milestone status
 
@@ -101,7 +101,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | **M4** | Six LangGraph agents, MCP tools, gateway D0, sims, 30 benign tasks | ✅ done |
 | **M5** | bankbench: S01–S24, oracles, mock runner, parquet report | ✅ done |
 | **M6** | Defenses D1-D10, tool-call policy, HITL | ✅ done |
-| M7 | Observability, controls, integrations | ⬜ planned |
+| **M7** | OTel spans, NIST controls, OpenAI Agents SDK, adapter smokes | ✅ done |
 | M8 | Stretch (Mojaloop, signed instructions, …) | ⬜ planned |
 
 See [`docs/milestones.md`](docs/milestones.md) and [`SPEC.md`](SPEC.md) §18.

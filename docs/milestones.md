@@ -11,7 +11,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ✅ done |
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ✅ done |
 | **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ✅ done |
-| **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ⬜ planned |
+| **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ✅ done |
 | **M8** | Stretch: Mojaloop overlay, AU-10 signed instructions, Canada CDB profile, A2A protocol, web-agent channel | ⬜ planned |
 
 **Definition of done (v1.0 = M0–M7):** a fresh clone runs
@@ -82,3 +82,10 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - D4's deny reasons match `deploy/opa/policies/tool_call.rego`. The suite runs `agentbank_gateway.policy.decide`. OPA itself is not started.
 - D3 is a pattern detector. ProtectAI weights are not loaded (license not verified). Meta Prompt Guard 2 is called out as Llama-licensed, not OSI. D9 matches canaries and long digit strings; Presidio is not installed. D6 enforces the CaMeL rule on tainted sensitive fields and does not vendor the research interpreter.
 - A run with more than one profile writes a D0 vs Dx ASR/BU/UA table. `make bench` also writes the benign false-positive rate.
+
+## M7 acceptance
+
+- `make controls-check` compares all 55 SPEC §12 controls in `controls/controls.yaml` with the vendored OSCAL SP 800-53 Rev.5 Release 5.2.0 LOW, MODERATE, and HIGH profiles. Each control has `tests/controls/test_<id>.py`.
+- An agent run records an in-memory OpenTelemetry span with `run_id`, `task_id`, `defense_profile`, and `prompt_hash`. Jaeger, the collector, OpenSearch, and Prometheus are pinned in `deploy/compose.obs.yaml` and are not started by `make up`.
+- The OpenAI Agents SDK runs the rent-invoice task on a scripted model, with no API key, and the reply contains account `200000001` (`tests/unit/test_m7_acceptance.py`).
+- AgentDojo, garak, PyRIT, promptfoo, and Inspect adapters each return a smoke payload. They do not shell out to those projects.

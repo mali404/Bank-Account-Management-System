@@ -29,4 +29,6 @@ archive, mail outbox, PSP egress). They do not score model text, except
 
 `templates/injections/adaptive.j2` takes `payload` and `feedback`. A live
 PyRIT orchestrator that fills `feedback` from oracle results is M7, as are
-the AgentDojo, garak, PyRIT, promptfoo, and Inspect adapters.
+the AgentDojo, garak, PyRIT, promptfoo, and Inspect adapter smokes.
+The OpenAI Agents SDK runs the rent-invoice task on a scripted model
+(`bankbench.frameworks.openai_agents`).

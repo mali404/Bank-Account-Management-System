@@ -2,4 +2,4 @@
 
 Adapter exposing the agents as a promptfoo provider for red-team / eval runs.
 
-Defined in SPEC §13. Implemented in **M7**.
+`smoke()` returns one promptfoo-shaped test. It does not shell out to promptfoo.
