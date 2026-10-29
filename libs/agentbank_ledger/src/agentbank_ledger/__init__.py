@@ -1,8 +1,9 @@
-"""Double-entry ledger helpers and (later) a TigerBeetle settlement wrapper.
+"""Bank books, the SimNow switch, and settlement.
 
-Milestone M2 fills this package with the bank-core ledger helpers and the
-TigerBeetle settlement wrapper. M0 ships a pure-Python double-entry balance
-check used by the ledger invariant tests.
+M0 shipped the pure-Python double-entry balance check. M2 adds the bank
+ledger, the in-process switch, and a settlement ledger that follows
+TigerBeetle's pending / post / void lifecycle. The public names below stay
+stable for the balance tests; the rest of the package is imported by module.
 """
 
 from __future__ import annotations

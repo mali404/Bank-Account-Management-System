@@ -96,11 +96,13 @@ clean: ## Remove caches and generated artifacts
 
 # --- Targets for later milestones (fail loudly so nobody mistakes them for working) ---
 
-seed: ## (M2) Seed synthetic data — not implemented yet
-	@echo "seed: not implemented yet (milestone M2)"; exit 1
+SEED ?= 42
 
-reset: ## (M2) Reset DB/TigerBeetle/NATS — not implemented yet
-	@echo "reset: not implemented yet (milestone M2)"; exit 1
+seed: ## (M2) Seed synthetic customers, history and the reset snapshot
+	@uv run python data/generator/generate.py --seed $(SEED)
+
+reset: ## (M2) Restore the seeded snapshot (budget 30s)
+	@uv run python scripts/reset_state.py
 
 bench: ## (M5) Run bankbench evaluation — not implemented yet
 	@echo "bench: not implemented yet (milestone M5)"; exit 1

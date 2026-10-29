@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestones **M0 (skeleton)** and **M1 (ISO 20022 library)** are complete. The uv workspace, core libraries, CI, and a docker compose core stack (Postgres, NATS, Keycloak, step-ca) come up healthy; `make iso-setup` fetches the ISO 20022 XSDs and generates the bindings; `make test` passes, including the Hypothesis round-trip (1,000 cases per §6.1 message). Milestones **M2–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0 (skeleton)**, **M1 (ISO 20022 library)**, and **M2 (banks and switch)** are complete. The uv workspace, core libraries, CI, and a docker compose core stack (Postgres, NATS, Keycloak, step-ca) come up healthy; `make iso-setup` fetches the ISO 20022 XSDs and generates the bindings; `make test` passes, including the Hypothesis round-trip (1,000 cases per §6.1 message) and the M2 payment, return, archive, and reset checks. Milestones **M3–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -84,7 +84,9 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | `check` | `lint` + `typecheck` + `test` |
 | `compose-config` | Validate all compose files |
 | `clean` | Remove caches and generated artifacts |
-| `seed` / `reset` / `bench` / `report` / `controls-check` | Not implemented yet (later milestones) |
+| `seed` | Seed three banks, 12 inter-bank payments, and the reset snapshot (`SEED=42`) |
+| `reset` | Restore `data/state` from that snapshot (budget 30 seconds) |
+| `bench` / `report` / `controls-check` | Not implemented yet (later milestones) |
 
 ## Milestone status
 
@@ -92,7 +94,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 |---|---|---|
 | **M0** | Skeleton: repo layout, uv workspace, LICENSE/NOTICE, CI, core compose healthy | ✅ done |
 | **M1** | ISO 20022 library: bindings, builders/parsers, validator, usage rules, inject, manifest | ✅ done |
-| M2 | Banks + switch | ⬜ planned |
+| **M2** | Banks + switch: ledger, SimNow, settlement, returns, RfP, archive, seed/reset | ✅ done |
 | M3 | FDX + FAPI 2.0 | ⬜ planned |
 | M4 | Agents + MCP | ⬜ planned |
 | M5 | `bankbench` scenarios/oracles | ⬜ planned |

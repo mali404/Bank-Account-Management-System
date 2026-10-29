@@ -34,8 +34,8 @@ payment = models.Pacs008Payment(
     remittance=("Rent October",),
 )
 
-xml = builders.build_pacs008(payment)          # bytes, XSD-valid
-assert parsers.parse_pacs008(xml) == payment   # round trip
+xml = builders.build_pacs008(payment)  # bytes, XSD-valid
+assert parsers.parse_pacs008(xml) == payment  # round trip
 assert validate_xsd(xml).ok
 
 header = models.BusinessHeader(
@@ -45,10 +45,10 @@ header = models.BusinessHeader(
     msg_def_idr="pacs.008.001.08",
     created_at=payment.created_at,
 )
-wire = builders.envelope(header, xml)          # <Envelope><AppHdr/><Document/></Envelope>
+wire = builders.envelope(header, xml)  # <Envelope><AppHdr/><Document/></Envelope>
 bah, document = parsers.parse_envelope(wire)
 
-rules = UsageRuleValidator.from_config()       # config/switch/usage_rules.yaml
+rules = UsageRuleValidator.from_config()  # config/switch/usage_rules.yaml
 assert rules.validate(xml).ok
 ```
 

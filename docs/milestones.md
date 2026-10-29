@@ -6,7 +6,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 |---|---|---|
 | **M0** | Skeleton: repo layout, uv workspace, Apache-2.0 LICENSE/NOTICE, CI (ruff, mypy, pytest), compose with Postgres/NATS/Keycloak/step-ca healthy | ✅ done |
 | **M1** | ISO 20022 library: xsdata bindings, builders/parsers, validator, usage rules, inject helpers, MANIFEST | ✅ done |
-| **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ⬜ planned |
+| **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ✅ done |
 | **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS, prowide cross-validator | ⬜ planned |
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ⬜ planned |
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ⬜ planned |
@@ -34,3 +34,15 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - API, the field-limit table and the charset profiles are documented in
   [`libs/agentbank_iso/README.md`](../libs/agentbank_iso/README.md). The schemas
   themselves are fetched, not committed; see [`iso20022/README.md`](../iso20022/README.md).
+
+## M2 acceptance
+
+- A pacs.008 from bank-b to bank-a settles `ACSC` in under 2 seconds. Customer balances move by the amount, the settlement positions sum to zero, each bank's settlement GL matches its switch position, suspense is clear, and the archive hash chain verifies (`tests/unit/test_m2_acceptance.py`).
+- Replaying the same envelope is `RJCT` / `AM05` and does not credit the creditor again.
+- An amount above the switch participant limit is `RJCT` / `AM02` with no pending debit left open.
+- A creditor response delay above the 20 second receiver timeout is `RJCT` / `AB05` and voids the pending transfer. The comparison stands in for a NATS request deadline, so the suite does not sleep.
+- camt.056 followed by pacs.004 returns the funds and restores both settlement positions.
+- Tampering with one archived blob fails `hash_chain_ok`.
+- pain.013 is forwarded, pain.014 is answered, and paying the RfP ends in `ACSC`.
+- `World.reset` and `make reset` (`scripts/reset_state.py`) restore the seed snapshot in under 30 seconds. `seed_world(..., 42)` is deterministic.
+- The three banks and the switch run in one process (`agentbank_ledger.world.World`). Settlement follows TigerBeetle's pending / post / void counters and does not connect to a TigerBeetle cluster. See [`libs/agentbank_ledger/README.md`](../libs/agentbank_ledger/README.md).
