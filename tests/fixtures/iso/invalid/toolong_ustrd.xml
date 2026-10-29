@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr><MsgId>M</MsgId><CreDtTm>2026-10-29T12:00:00Z</CreDtTm><NbOfTxs>1</NbOfTxs><IntrBkSttlmDt>2026-10-29</IntrBkSttlmDt><SttlmInf><SttlmMtd>CLRG</SttlmMtd></SttlmInf></GrpHdr>
+    <CdtTrfTxInf><PmtId><EndToEndId>E</EndToEndId></PmtId><IntrBkSttlmAmt Ccy="USD">10.00</IntrBkSttlmAmt><ChrgBr>SLEV</ChrgBr><Dbtr><Nm>Alice</Nm></Dbtr><DbtrAcct><Id><Othr><Id>1</Id></Othr></Id></DbtrAcct><DbtrAgt><FinInstnId><ClrSysMmbId><MmbId>999900022</MmbId></ClrSysMmbId></FinInstnId></DbtrAgt><CdtrAgt><FinInstnId><ClrSysMmbId><MmbId>999900011</MmbId></ClrSysMmbId></FinInstnId></CdtrAgt><Cdtr><Nm>Bob</Nm></Cdtr><CdtrAcct><Id><Othr><Id>2</Id></Othr></Id></CdtrAcct><RmtInf><Ustrd>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</Ustrd></RmtInf></CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

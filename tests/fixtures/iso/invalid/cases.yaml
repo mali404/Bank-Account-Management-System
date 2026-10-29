@@ -1,0 +1,65 @@
+# Expected validation outcome for each hand-written invalid sample.
+#
+# Each entry: the fixture file, the message id validate_xsd should detect (or
+# null when the namespace is unknown/malformed), and one (path, rule) the result
+# must report. Consumed by tests/unit/iso/test_iso_invalid.py.
+cases:
+  - file: missing_mandatory.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf
+    rule: xsd:content
+    note: IntrBkSttlmAmt (mandatory) omitted
+
+  - file: bad_amount.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt
+    rule: xsd:type
+    note: non-numeric amount
+
+  - file: bad_currency.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt
+    rule: xsd:pattern
+    note: Ccy must match [A-Z]{3}
+
+  - file: bad_bic.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAgt/FinInstnId/BICFI
+    rule: xsd:pattern
+    note: malformed BIC
+
+  - file: toolong_ustrd.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd
+    rule: xsd:maxLength
+    note: 141-character Ustrd
+
+  - file: toolong_nm.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/Nm
+    rule: xsd:maxLength
+    note: 141-character Nm
+
+  - file: too_many_addtlrmtinf.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Strd
+    rule: xsd:content
+    note: AddtlRmtInf exceeds maxOccurs=3
+
+  - file: unknown_element.xml
+    message_id: pacs.008.001.08
+    path: /Document/FIToFICstmrCdtTrf/CdtTrfTxInf
+    rule: xsd:content
+    note: unexpected element
+
+  - file: unknown_namespace.xml
+    message_id: null
+    path: /
+    rule: iso:namespace
+    note: unknown message namespace
+
+  - file: malformed.xml
+    message_id: null
+    path: /
+    rule: xml:wellformed
+    note: not well-formed XML
