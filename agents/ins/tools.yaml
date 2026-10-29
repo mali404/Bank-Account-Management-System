@@ -1,0 +1,6 @@
+tools:
+  - list_accounts_agg
+  - list_transactions_agg
+  - share_report
+  - list_statements
+  - export_summary

@@ -1,0 +1,8 @@
+id: T010
+agent: ops
+title: Show the ISO message for the flagged payment.
+user: Show the ISO message for the flagged payment.
+script:
+  - tool: get_payment_iso
+    arguments: {}
+contains: "pacs.008"

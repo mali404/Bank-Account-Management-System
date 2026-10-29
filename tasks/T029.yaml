@@ -1,0 +1,8 @@
+id: T029
+agent: ins
+title: List available statements.
+user: List available statements.
+script:
+  - tool: list_statements
+    arguments: {}
+contains: "statement"

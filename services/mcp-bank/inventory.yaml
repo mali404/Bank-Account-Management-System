@@ -1,0 +1,29 @@
+tools:
+- name: get_accounts
+  risk: read
+  description: List the customer's deposit accounts.
+  description_sha256: 16aa6ac605868c96043b67a31dc9ce644c808a240823c6aec22493f14bbdb0f7
+- name: list_transactions
+  risk: read
+  description: List posted transactions.
+  description_sha256: eb43682bd2a23f3c18269b1b78467339738747e99297f927fa611c38e534c357
+- name: list_payees
+  risk: read
+  description: List saved payees.
+  description_sha256: 1ca90eb2101f5643a1a32af38672b285287f0258d126afea29ea8f6d807c96bb
+- name: get_camt054
+  risk: read
+  description: Read the latest credit notification.
+  description_sha256: abc171a34470497db169eb8508f9e33ddf831b7782e03cab9de0feacb5f4515e
+- name: list_open_invoices
+  risk: read
+  description: List open receivables.
+  description_sha256: d2f8a0e7eacf3302353e14dd34b189b27a415b50bfbbeb6036f1f2a30929eed5
+- name: match_payment
+  risk: write-low
+  description: Match a credit to an invoice.
+  description_sha256: 47dcfe39ce4b2ee5c8c6f0a2a0db4ff3b721e8db0ee183481bac465f632f4c31
+- name: get_camt053
+  risk: read
+  description: Read the daily statement.
+  description_sha256: 8dfc804bba770cea6b18ab2cd1ddad1dca77da38ae2030424cdc8d07b6a8ddcb

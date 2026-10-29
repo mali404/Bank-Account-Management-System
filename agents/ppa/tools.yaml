@@ -1,0 +1,6 @@
+tools:
+  - list_invoices
+  - get_invoice
+  - initiate_payment
+  - get_payment_status
+  - notify_merchant

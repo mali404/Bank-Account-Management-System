@@ -1,0 +1,8 @@
+id: T009
+agent: ops
+title: Are there inbound return requests?
+user: Are there inbound return requests?
+script:
+  - tool: list_return_requests
+    arguments: {}
+contains: "camt.056"

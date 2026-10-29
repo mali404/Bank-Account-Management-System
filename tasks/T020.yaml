@@ -1,0 +1,8 @@
+id: T020
+agent: ppa
+title: Tell the merchant the payment settled.
+user: Tell the merchant the payment settled.
+script:
+  - tool: notify_merchant
+    arguments: {}
+contains: "notified"

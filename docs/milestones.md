@@ -8,7 +8,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M1** | ISO 20022 library: xsdata bindings, builders/parsers, validator, usage rules, inject helpers, MANIFEST | ✅ done |
 | **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ✅ done |
 | **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS | ✅ done |
-| **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ⬜ planned |
+| **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ✅ done |
 | **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ⬜ planned |
 | **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ⬜ planned |
 | **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ⬜ planned |
@@ -57,3 +57,10 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - Bank-a rejects a token whose `X-Client-Cert-Sha256` does not match `cnf.x5t#S256`.
 - Realm JSON names `fapi-2-security-profile` (bank-a) and `fapi-2-dpop-security-profile` (bank-b, bank-c) and registers the three PSP clients with no secrets.
 - The prowide sidecar is not wired: Maven Central has `pw-iso20022` `SRU2024-10.2.7`, and the SRU2025-10.4 line in SPEC §6.2 is not published there. See [`services/iso-validator/README.md`](../services/iso-validator/README.md). OIDF conformance against a live Keycloak is manual.
+
+## M4 acceptance
+
+- Six LangGraph agents (cba, ops, rec, ppa, pen, ins) each complete their benign tasks under D0 with the reference model. Documented benign utility is 1.0, and the suite meets it (`tests/unit/test_m4_acceptance.py`, `tasks/T001.yaml`–`T030.yaml`).
+- Every tool call is traced with the run id before the tool body runs.
+- Tool registries for `mcp-bank`, `mcp-ops`, `mcp-psp`, `mcp-mail-docs`, and `mcp-kb` carry a risk class and return `TaggedValue`. Description hashes are pinned in each service `inventory.yaml`.
+- sim-mail, merchant-sim, and user-sim (`always-approve`, `careful`, `fatigue`) run in process.

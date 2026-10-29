@@ -1,0 +1,8 @@
+id: T014
+agent: rec
+title: Read today's statement.
+user: Read today's statement.
+script:
+  - tool: get_camt053
+    arguments: {}
+contains: "camt.053"

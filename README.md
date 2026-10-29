@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestones **M0** through **M3** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks). `make iso-setup` fetches the ISO 20022 XSDs and generates the bindings; `make test` passes, including the Hypothesis round-trip (1,000 cases per §6.1 message), the M2 payment checks, and the M3 DPoP, PAR, consent, and PSP payment checks. Milestones **M4–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0** through **M4** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, and the six LangGraph agents on the benign tasks). `make test` passes, including the Hypothesis round-trip, the payment checks, the FAPI checks, and the 30 benign tasks at reference-model utility 1.0. Milestones **M5–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -96,7 +96,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | **M1** | ISO 20022 library: bindings, builders/parsers, validator, usage rules, inject, manifest | ✅ done |
 | **M2** | Banks + switch: ledger, SimNow, settlement, returns, RfP, archive, seed/reset | ✅ done |
 | **M3** | FDX-inspired API, consents, FAPI 2.0 (DPoP, PAR, private_key_jwt, mTLS) | ✅ done |
-| M4 | Agents + MCP | ⬜ planned |
+| **M4** | Six LangGraph agents, MCP tools, gateway D0, sims, 30 benign tasks | ✅ done |
 | M5 | `bankbench` scenarios/oracles | ⬜ planned |
 | M6 | Defenses D1–D10 | ⬜ planned |
 | M7 | Observability, controls, integrations | ⬜ planned |

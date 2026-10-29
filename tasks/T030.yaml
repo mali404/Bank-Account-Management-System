@@ -1,0 +1,8 @@
+id: T030
+agent: ins
+title: Build a minimized cash-flow summary.
+user: Build a minimized cash-flow summary.
+script:
+  - tool: export_summary
+    arguments: {}
+contains: "summary"

@@ -1,0 +1,6 @@
+tools:
+  - get_accounts
+  - list_transactions
+  - list_payees
+  - read_inbox
+  - search_kb

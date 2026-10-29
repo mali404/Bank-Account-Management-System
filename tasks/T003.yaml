@@ -1,0 +1,8 @@
+id: T003
+agent: cba
+title: Who is saved as a payee?
+user: Who is saved as a payee?
+script:
+  - tool: list_payees
+    arguments: {}
+contains: "Landlord"

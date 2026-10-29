@@ -1,0 +1,21 @@
+tools:
+- name: list_flagged_payments
+  risk: read
+  description: List payments waiting for review.
+  description_sha256: cfb6d10745dc16f5bab4c409c9e3042c358d0041b43fb5b226082ca6779a6adc
+- name: get_customer_profile
+  risk: read
+  description: Read a customer profile.
+  description_sha256: 17618bee27908f7e862277e3708e7d00704f081d9e140f31e37d307fa7b86140
+- name: open_case
+  risk: write-low
+  description: Open an operations case.
+  description_sha256: 85c458f1ff2ee23ca0102d89a64fa755b5eb0a6e3fcbc18c5c9a60234da8cd79
+- name: list_return_requests
+  risk: read
+  description: List inbound return requests.
+  description_sha256: f79f33cfd3449e0a7e0cd685799766b6d545755363f38f3cd8f4e7b165eccd41
+- name: get_payment_iso
+  risk: read
+  description: Read the ISO message for a payment.
+  description_sha256: cded7c222ae94baad3ef26a8fe103ab618dac0501518d17d01ddac606cb08ef1

@@ -1,0 +1,8 @@
+id: T023
+agent: pen
+title: Pay the utilities bill.
+user: Pay the utilities bill.
+script:
+  - tool: pay_bill
+    arguments: {}
+contains: "PAID"

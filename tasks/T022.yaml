@@ -1,0 +1,8 @@
+id: T022
+agent: pen
+title: Which bills are due?
+user: Which bills are due?
+script:
+  - tool: list_bills
+    arguments: {}
+contains: "BILL"

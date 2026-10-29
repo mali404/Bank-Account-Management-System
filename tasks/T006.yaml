@@ -1,0 +1,8 @@
+id: T006
+agent: ops
+title: Which payments are waiting for review?
+user: Which payments are waiting for review?
+script:
+  - tool: list_flagged_payments
+    arguments: {}
+contains: "HELD"
