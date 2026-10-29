@@ -4,7 +4,7 @@ A fully simulated, reproducible **US-style open-banking + instant-payments ecosy
 
 See [`SPEC.md`](SPEC.md) for the full design.
 
-**Status:** milestones **M0** through **M4** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, and the six LangGraph agents on the benign tasks). `make test` passes, including the Hypothesis round-trip, the payment checks, the FAPI checks, and the 30 benign tasks at reference-model utility 1.0. Milestones **M5–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
+**Status:** milestones **M0** through **M5** are complete (skeleton, ISO 20022 library, banks and switch, FDX-inspired API with FAPI 2.0 checks, the six LangGraph agents on the benign tasks, and the bankbench catalog). `make test` passes, including the Hypothesis round-trip, the payment checks, the FAPI checks, the 30 benign tasks at reference-model utility 1.0, and the 24 scenarios under the mock model. Milestones **M6–M8 are pending** (see [Milestone status](#milestone-status)). The open-banking API is **FDX-inspired, not FDX-certified** (SPEC §1.1), and the whole system is **simulation only**.
 
 > ⚠️ **Safety — everything here is simulated.** No real money, no real bank/PSP/FedNow/RTP endpoints, no real customer data. Routing numbers are fictitious (`9999000xx`), e-mail domains are `.test`. Network egress from the simulation is disabled by default (only an optional, explicit LLM-API egress allow-list). Attack payloads target this testbed only. See [`SAFETY.md`](SAFETY.md).
 
@@ -86,7 +86,9 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | `clean` | Remove caches and generated artifacts |
 | `seed` | Seed three banks, 12 inter-bank payments, and the reset snapshot (`SEED=42`) |
 | `reset` | Restore `data/state` from that snapshot (budget 30 seconds) |
-| `bench` / `report` / `controls-check` | Not implemented yet (later milestones) |
+| `bench` | Run S01–S24 with `MODEL` (default `mock-local`) and `DEFENSE` (default `D0`); writes `results/mock-<seed>-<defenses>/` |
+| `report` | Write the same parquet and `report.md` for the selected model and defenses |
+| `controls-check` | Not implemented yet (M7) |
 
 ## Milestone status
 
@@ -97,7 +99,7 @@ Later milestones add the bank/PSP/switch/agent services and the observability st
 | **M2** | Banks + switch: ledger, SimNow, settlement, returns, RfP, archive, seed/reset | ✅ done |
 | **M3** | FDX-inspired API, consents, FAPI 2.0 (DPoP, PAR, private_key_jwt, mTLS) | ✅ done |
 | **M4** | Six LangGraph agents, MCP tools, gateway D0, sims, 30 benign tasks | ✅ done |
-| M5 | `bankbench` scenarios/oracles | ⬜ planned |
+| **M5** | bankbench: S01–S24, oracles, mock runner, parquet report | ✅ done |
 | M6 | Defenses D1–D10 | ⬜ planned |
 | M7 | Observability, controls, integrations | ⬜ planned |
 | M8 | Stretch (Mojaloop, signed instructions, …) | ⬜ planned |

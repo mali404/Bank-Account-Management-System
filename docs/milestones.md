@@ -9,7 +9,7 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 | **M2** | Banks + switch: bank-core ×3, switch pipeline, TigerBeetle settlement, returns, RfP, archive | ✅ done |
 | **M3** | FDX + FAPI 2.0: FDX-style API, consents, payments, 3 PSPs, Keycloak FAPI policies, DPoP/PAR/private_key_jwt, mTLS | ✅ done |
 | **M4** | Agents + MCP: 6 agents on LangGraph, MCP servers, gateway (D0), sim-mail, merchant-sim, user-sim, ≥30 benign tasks | ✅ done |
-| **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ⬜ planned |
+| **M5** | bankbench: scenarios S01–S24, templates, oracles, runner, metrics, parquet + report | ✅ done |
 | **M6** | Defenses: D1–D10 plugins, OPA policies, CaMeL-style mode, HITL models | ⬜ planned |
 | **M7** | Obs, controls, integrations: OTel/Jaeger/OpenSearch, controls.yaml + check_baselines.py, OpenAI Agents SDK, adapters | ⬜ planned |
 | **M8** | Stretch: Mojaloop overlay, AU-10 signed instructions, Canada CDB profile, A2A protocol, web-agent channel | ⬜ planned |
@@ -64,3 +64,13 @@ Tracks the milestone plan in [`../SPEC.md`](../SPEC.md) §18.
 - Every tool call is traced with the run id before the tool body runs.
 - Tool registries for `mcp-bank`, `mcp-ops`, `mcp-psp`, `mcp-mail-docs`, and `mcp-kb` carry a risk class and return `TaggedValue`. Description hashes are pinned in each service `inventory.yaml`.
 - sim-mail, merchant-sim, and user-sim (`always-approve`, `careful`, `fatigue`) run in process.
+
+## M5 acceptance
+
+- `scenarios/S01.yaml`–`S24.yaml` load, and each names a template under `templates/injections/` and an oracle in `bankbench.oracles` (`tests/unit/test_m5_acceptance.py`).
+- `run_catalog` runs every scenario twice (benign twin and injection). Under D0 the mock sets the attack flag and the success oracle is true. The benign twin keeps `utility_success` and a false attack oracle.
+- A second profile name (`D4`) is recorded with the attack oracle false. That is the mock, not an implementation of D4 (D1–D10 are M6).
+- Two runs with seed 42 produce the same rows, including the anchor timestamp `2026-10-29T15:00:00Z`.
+- Every oracle has a forced-success snapshot and a forced-failure snapshot.
+- `write_run` writes `results.parquet` in `RESULTS_COLUMN_NAMES` order and a `report.md` with ASR, BU, UA, UTV, and Wilson 95% intervals.
+- `make bench` and `make report` call `python -m bankbench`. See [`bankbench/README.md`](../bankbench/README.md).
